@@ -1,0 +1,7 @@
+## Interface: 90205
+## Author: cqwrteur
+## Title: QUI Status
+
+## Dependencies: QUI
+
+status.lua

@@ -1,0 +1,6 @@
+## Interface: 90205
+## Author: cqwrteur
+## Title: QUI Objective
+## Dependencies: QUI
+
+objective.lua

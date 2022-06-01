@@ -1,0 +1,7 @@
+## Interface: 90205
+## Author: cqwrteur
+## Title: QUI Cast Bar
+
+## Dependencies: QUI
+
+castbar.lua

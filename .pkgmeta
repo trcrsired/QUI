@@ -1,0 +1,61 @@
+package-as: QUI
+
+externals:
+	Libs/LibStub: svn://svn.wowace.com/wow/libstub/mainline/tags/1.0
+	Libs/CallbackHandler-1.0: svn://svn.wowace.com/wow/callbackhandler/mainline/trunk/CallbackHandler-1.0
+	Libs/AceAddon-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceAddon-3.0
+	Libs/AceConsole-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceConsole-3.0
+	Libs/AceEvent-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceEvent-3.0
+	Libs/AceDB-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceDB-3.0
+	Libs/LibSharedMedia-3.0: https://repos.curseforge.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
+	Options/Libs/AceConfig-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceConfig-3.0
+	Options/Libs/AceGUI-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceGUI-3.0
+	Options/Libs/AceLocale-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceLocale-3.0
+	Options/Libs/AceDBOptions-3.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceDBOptions-3.0
+	Options/Libs/AceGUI-3.0-SharedMediaWidgets: https://repos.curseforge.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets
+
+move-folders:
+	QUI/Options: QUI_Options
+	QUI/QUI_Ace3: QUI_Ace3
+	QUI/QUI_Actionbar: QUI_Actionbar
+	QUI/QUI_AddOns: QUI_AddOns
+	QUI/QUI_Auction: QUI_Auction
+	QUI/QUI_Aura: QUI_Aura
+	QUI/QUI_Bag: QUI_Bag
+	QUI/QUI_Binding: QUI_Binding
+	QUI/QUI_Castbar: QUI_Castbar
+	QUI/QUI_Challenges: QUI_Challenges
+	QUI/QUI_Character: QUI_Character
+	QUI/QUI_Chat: QUI_Chat
+	QUI/QUI_Collections: QUI_Collections
+	QUI/QUI_Communities: QUI_Communities
+	QUI/QUI_DBM: QUI_DBM
+	QUI/QUI_EncounterJournal: QUI_EncounterJournal
+	QUI/QUI_GameMenu: QUI_GameMenu
+	QUI/QUI_Gossip: QUI_Gossip
+	QUI/QUI_LFG: QUI_LFG
+	QUI/QUI_LuaError: QUI_LuaError
+	QUI/QUI_Macro: QUI_Macro
+	QUI/QUI_Map: QUI_Map
+	QUI/QUI_Merchant: QUI_Merchant
+	QUI/QUI_Microbar: QUI_Microbar
+	QUI/QUI_Minimap: QUI_Minimap
+	QUI/QUI_MirrorTimer: QUI_MirrorTimer
+	QUI/QUI_Nameplate: QUI_Nameplate
+	QUI/QUI_O: QUI_O
+	QUI/QUI_Objective: QUI_Objective
+	QUI/QUI_OrderHall: QUI_OrderHall
+	QUI/QUI_PVP: QUI_PVP
+	QUI/QUI_ReadyCheck: QUI_ReadyCheck
+	QUI/QUI_SBT: QUI_SBT
+	QUI/QUI_Social: QUI_Social
+	QUI/QUI_SpellBook: QUI_SpellBook
+	QUI/QUI_StaticPopup: QUI_StaticPopup
+	QUI/QUI_Status: QUI_Status
+	QUI/QUI_System: QUI_System
+	QUI/QUI_Talent: QUI_Talent
+	QUI/QUI_TalkingHead: QUI_TalkingHead
+	QUI/QUI_Tooltip: QUI_Tooltip
+	QUI/QUI_TradeSkill: QUI_TradeSkill
+	QUI/QUI_UnitFrame: QUI_UnitFrame
+	QUI/QUI_WowLua: QUI_WowLua

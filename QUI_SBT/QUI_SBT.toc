@@ -1,0 +1,7 @@
+## Interface: 90205
+## Author: cqwrteur
+## Title: QUI Scrolling Battle Text
+
+## Dependencies: QUI
+
+sbt.lua

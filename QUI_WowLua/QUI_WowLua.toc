@@ -1,0 +1,6 @@
+## Interface: 90205
+## Author: cqwrteur
+## Title: QUI WowLua
+## Dependencies: QUI, WowLua
+
+wowlua.lua

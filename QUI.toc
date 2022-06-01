@@ -1,0 +1,8 @@
+## Interface: 90205
+## Author: cqwrteur
+## Title: QUI
+## Version: 360
+## SavedVariables: QUIDB
+## OptionalDeps: Ace3
+
+Init.lua
