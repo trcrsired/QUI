@@ -1,35 +1,18 @@
-FriendsFrame.NineSlice:Hide()
-FriendsFrame.Bg:SetTexture(131071)
-FriendsFrame.TitleBg:SetTexture(131071)
-FriendsFrame.TopTileStreaks:SetAlpha(0)
-FriendsFrameInset:SetAlpha(0)
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 
-for i=1,4 do
-	_G["FriendsFrameTab"..i.."Left"]:SetAlpha(0)
-	_G["FriendsFrameTab"..i.."Middle"]:SetAlpha(0)
-	_G["FriendsFrameTab"..i.."Right"]:SetAlpha(0)
-	_G["FriendsFrameTab"..i.."LeftDisabled"]:SetAlpha(0)
-	_G["FriendsFrameTab"..i.."MiddleDisabled"]:SetAlpha(0)
-	_G["FriendsFrameTab"..i.."RightDisabled"]:SetAlpha(0)
-end
+QUI.KillFrameNineSlice(FriendsFrame)
 
-for i=1,3 do
-	_G["FriendsTabHeaderTab"..i.."Left"]:SetAlpha(0)
-	_G["FriendsTabHeaderTab"..i.."Middle"]:SetAlpha(0)
-	_G["FriendsTabHeaderTab"..i.."Right"]:SetAlpha(0)
-	_G["FriendsTabHeaderTab"..i.."LeftDisabled"]:SetAlpha(0)
-	_G["FriendsTabHeaderTab"..i.."MiddleDisabled"]:SetAlpha(0)
-	_G["FriendsTabHeaderTab"..i.."RightDisabled"]:SetAlpha(0)
-end
+QUI.KillFrameLMRBorder("FriendsFrameTab1")
+QUI.KillFrameLMRBorder("FriendsFrameTab2")
+QUI.KillFrameLMRBorder("FriendsFrameTab3")
+QUI.KillFrameLMRBorder("FriendsFrameTab4")
+
+QUI.KillFrameLMRBorder("FriendsTabHeaderTab1")
+QUI.KillFrameLMRBorder("FriendsTabHeaderTab2")
+QUI.KillFrameLMRBorder("FriendsTabHeaderTab3")
 
 
-
-local function skinbutton(button)
-	button.Left:SetAlpha(0)
-	button.Middle:SetVertexColor(0,0,0,1)
-	button.Right:SetAlpha(0)
-	button:SetHighlightTexture("")
-end
+local skinbutton = QUI.skin_button
 
 skinbutton(FriendsFrameSendMessageButton)
 skinbutton(FriendsFrameAddFriendButton)
@@ -39,7 +22,9 @@ skinbutton(WhoFrameGroupInviteButton)
 skinbutton(RaidFrameConvertToRaidButton)
 skinbutton(RaidFrameRaidInfoButton)
 skinbutton(RaidFrameRaidInfoButton)
+if QuickJoinFrame then
 skinbutton(QuickJoinFrame.JoinQueueButton)
+end
 WhoFrameEditBoxInset:SetAlpha(0)
 
 WhoFrameListInset:SetAlpha(0)

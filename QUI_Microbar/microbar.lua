@@ -1,5 +1,7 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 
+if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+
 do
 local microbar = CreateFrame("Frame",nil,UIParent)
 microbar:SetPoint("TOPLEFT",UIParent,"TOPLEFT",0,0)
@@ -11,10 +13,7 @@ QUI.microbar = microbar
 local MICRO_BUTTONS = MICRO_BUTTONS
 
 if GuildMicroButton then
-
-GuildMicroButton.NotificationOverlay:SetAlpha(0)
-GuildMicroButton.NotificationOverlay:SetParent(QUI.UIHider)
-
+QUI.KillFrame(GuildMicroButton.NotificationOverlay)
 end
 
 local function on_enter()
@@ -30,7 +29,9 @@ local function on_enter()
 		end
 	end
 	MicroButtonPortrait:Show()
-	GuildMicroButtonTabard:Show()
+	if GuildMicroButtonTabard then
+		GuildMicroButtonTabard:Show()
+	end
 end
 MainMenuBarPerformanceBar:SetAlpha(0)
 MainMenuBarPerformanceBar:SetScale(0.00001)
@@ -47,10 +48,14 @@ local function on_leave()
 		end
 	end
 	MicroButtonPortrait:Hide()
-	GuildMicroButtonTabard:Hide()
+	if GuildMicroButtonTabard then
+		GuildMicroButtonTabard:Hide()
+	end
 end
+if GuildMicroButtonTabard then
 GuildMicroButtonTabard.background:SetParent(GuildMicroButtonTabard)
 GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+end
 MicroButtonPortrait:SetAllPoints(CharacterMicroButton)
 on_leave()
 
@@ -69,7 +74,7 @@ for i=1,#MICRO_BUTTONS do
 end
 
 end
-
+if GuildMicroButtonTabard then
 function QUI:UpdateMicroButtons()
 	local pushed = GuildMicroButton:GetNormalTexture()
 	if pushed:GetAlpha() == 0 then
@@ -78,13 +83,16 @@ function QUI:UpdateMicroButtons()
 		GuildMicroButtonTabard:Show()
 	end
 end
-
+QUI:SecureHook("UpdateMicroButtons")
+end
 MoveMicroButtons("TOPLEFT", QUI.microbar, "TOPLEFT", 0,0)
 
 function QUI:MoveMicroButtons(point,frame)
 	if frame ~= QUI.microbar then
 		MoveMicroButtons("TOPLEFT", QUI.microbar, "TOPLEFT", 0,0)
-		GuildMicroButtonTabard:Hide()
+		if GuildMicroButtonTabard then
+			GuildMicroButtonTabard:Hide()
+		end
 	end
 end
 
@@ -95,7 +103,7 @@ function QUI:UpdateMicroButtonsParent()
 end
 
 QUI:UpdateMicroButtonsParent()
-
 QUI:SecureHook("UpdateMicroButtonsParent")
-QUI:SecureHook("UpdateMicroButtons")
 QUI:SecureHook("MoveMicroButtons")
+
+end
