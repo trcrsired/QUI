@@ -256,8 +256,12 @@ function QUI.skin_scrollframe(scollframe)
 	end
 	local tb = _G[scollframe]
 	QUI.KillFrameNineSlice(tb)
+--[[
+
 	QUI.setalphazeroframe(_G[scollframe.."ScrollFrame"])
 	QUI.setalphazeroframe(tb.ScrollBox)
+]]
+
 	QUI.setalphazeroframe(_G[scollframe.."Inset"])
 	QUI.setalphazeroframe(tb.inset)
 end
