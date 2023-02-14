@@ -261,7 +261,9 @@ function QUI.skin_scrollframe(scollframe)
 	QUI.setalphazeroframe(_G[scollframe.."ScrollFrame"])
 	QUI.setalphazeroframe(tb.ScrollBox)
 ]]
-
+	if tb.ScrollBar then
+		tb.ScrollBar:SetAlpha(0)
+	end
 	QUI.setalphazeroframe(_G[scollframe.."Inset"])
 	QUI.setalphazeroframe(tb.inset)
 end
