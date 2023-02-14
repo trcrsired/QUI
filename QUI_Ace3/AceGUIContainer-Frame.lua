@@ -84,7 +84,7 @@ local methods = {
 		self:SetStatusText()
 		self:ApplyStatus()
 		self:Show()
-        self:EnableResize(true)
+		self:EnableResize(true)
 	end,
 
 	["OnRelease"] = function(self)
@@ -201,6 +201,12 @@ local function Constructor()
 	closebutton:SetHeight(20)
 	closebutton:SetWidth(100)
 	closebutton:SetText(CLOSE)
+	closebutton.Left:Hide()
+	closebutton.Middle:SetVertexColor(0,0,0,0.8)
+	closebutton.Right:Hide()
+	closebutton:SetHighlightTexture("")
+	closebutton:SetPushedTexture("")
+	closebutton:SetDisabledTexture("")
 
 	local statusbg = CreateFrame("Button", nil, frame, "BackdropTemplate")
 	statusbg:SetPoint("BOTTOMLEFT", 15, 15)
@@ -258,6 +264,7 @@ local function Constructor()
 	sizer_se:SetScript("OnMouseDown",SizerSE_OnMouseDown)
 	sizer_se:SetScript("OnMouseUp", MoverSizer_OnMouseUp)
 
+--[[
 	local line1 = sizer_se:CreateTexture(nil, "BACKGROUND")
 	line1:SetWidth(14)
 	line1:SetHeight(14)
@@ -273,7 +280,7 @@ local function Constructor()
 	line2:SetTexture(137057) -- Interface\\Tooltips\\UI-Tooltip-Border
 	x = 0.1 * 8/17
 	line2:SetTexCoord(0.05 - x, 0.5, 0.05, 0.5 + x, 0.05, 0.5 - x, 0.5 + x, 0.5)
-
+]]
 	local sizer_s = CreateFrame("Frame", nil, frame)
 	sizer_s:SetPoint("BOTTOMRIGHT", -25, 0)
 	sizer_s:SetPoint("BOTTOMLEFT")
