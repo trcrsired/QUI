@@ -116,6 +116,17 @@ function QUI.KillFrameBackgroundBySearch(frame,texture)
 	end	
 end
 
+function QUI.KillFrameBorderBySearch(frame)
+	if frame == nil then
+		return
+	end
+	for k,v in pairs(frame) do
+		if type(k)=="string" and type(v)=="table" and (k:find("Edge") or k:find("Corner")) then
+			v:SetAlpha(0)
+		end
+	end
+end
+
 function QUI.setalphazeroframe(frame)
 	if frame == nil then
 		return
@@ -266,6 +277,29 @@ function QUI.skin_naiveskinframe(str)
 	for k,v in pairs(frame.Border) do
 		if type(k)=="string" and type(v)=="table" and (k:find("Edge") or k:find("Corner")) then
 			v:SetAlpha(0)
+		end
+	end
+end
+
+
+function QUI.skin_buttons_in_frame(frame)
+	if frame == nil then
+		return
+	end
+	if frame.GetChildren == nil then
+		return
+	end
+	local slots = {frame:GetChildren()}
+	local _G = _G
+	for i=1,#slots do
+		local slot=slots[i]
+		if slot:IsObjectType("Button") or slot:IsObjectType("ItemButton") then
+			_G[slot:GetName().."Frame"]:Hide()
+			slot:SetNormalTexture("")
+			slot:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
+			slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
+			slot.IconBorder:SetAlpha(0)
+			slot.icon:SetTexCoord(0.1,0.9,0.1,0.9)
 		end
 	end
 end

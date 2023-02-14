@@ -1,19 +1,6 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 QUI.KillFrameNineSlice(CharacterFrame)
-
-local slots = {PaperDollItemsFrame:GetChildren()}
-local _G = _G
-for i=1,#slots do
-	local slot=slots[i]
-	if slot:IsObjectType("Button") or slot:IsObjectType("ItemButton") then
-		_G[slot:GetName().."Frame"]:Hide()
-		slot:SetNormalTexture("")
-		slot:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-		slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-		slot.IconBorder:SetAlpha(0)
-		slot.icon:SetTexCoord(0.1,0.9,0.1,0.9)
-	end
-end
+QUI.skin_buttons_in_frame(PaperDollItemsFrame)
 
 local function hide_left_right(slot)
 	local regions = {slot:GetRegions()}
@@ -28,67 +15,35 @@ end
 hide_left_right(CharacterMainHandSlot)
 hide_left_right(CharacterSecondaryHandSlot)
 
-CharacterFrame.InsetRight.NineSlice:Hide()
-CharacterFrame.InsetRight.Bg:Hide()
 CharacterStatsPane.ClassBackground:SetAlpha(0)
-CharacterModelFrame.BackgroundOverlay:Hide()
-PaperDollInnerBorderTopLeft:Hide()
-PaperDollInnerBorderTopRight:Hide()
-PaperDollInnerBorderBottomLeft:Hide()
-PaperDollInnerBorderBottomRight:Hide()
-PaperDollInnerBorderLeft:Hide()
-PaperDollInnerBorderRight:Hide()
-PaperDollInnerBorderTop:Hide()
-PaperDollInnerBorderBottom:Hide()
-PaperDollInnerBorderBottom2:Hide()
 
-local function hide_character_frame_tab(str)
-	local _G = _G
-	_G[str.."Left"]:SetAlpha(0)
-	_G[str.."LeftDisabled"]:SetAlpha(0)
-	_G[str.."Middle"]:SetAlpha(0)
-	_G[str.."MiddleDisabled"]:SetAlpha(0)
-	_G[str.."Right"]:SetAlpha(0)
-	_G[str.."RightDisabled"]:SetAlpha(0)
-end
-hide_character_frame_tab("CharacterFrameTab1")
-hide_character_frame_tab("CharacterFrameTab2")
-hide_character_frame_tab("CharacterFrameTab3")
-ReputationListScrollFrame:SetAlpha(0)
-TokenFrameContainerScrollBar:SetAlpha(0)
-PaperDollTitlesPaneScrollBar:SetAlpha(0)
-PaperDollEquipmentManagerPaneScrollBar:SetAlpha(0)
+QUI.skin_buttons_in_frame("PaperDollInnerBorder")
 
-local function skinbutton(v)
-	v.Left:SetAlpha(0)
-	v.Middle:SetAlpha(0)
-	v.Right:SetAlpha(0)
-end
+QUI.KillFrameLMRBorder("CharacterFrameTab1")
+QUI.KillFrameLMRBorder("CharacterFrameTab2")
+QUI.KillFrameLMRBorder("CharacterFrameTab3")
+QUI.setalphazeroframe(ReputationListScrollFrame)
+QUI.setalphazeroframe(TokenFrameContainerScrollBar)
+QUI.setalphazeroframe(PaperDollTitlesPaneScrollBar)
+QUI.setalphazeroframe(PaperDollEquipmentManagerPaneScrollBar)
 
-skinbutton(PaperDollEquipmentManagerPaneSaveSet)
-skinbutton(PaperDollEquipmentManagerPaneEquipSet)
+QUI.KillFrameLMRBorder(PaperDollEquipmentManagerPaneSaveSet)
+QUI.KillFrameLMRBorder(PaperDollEquipmentManagerPaneEquipSet)
 
 for i=1,3 do
-	_G["PaperDollSidebarTab"..i].TabBg:Hide()
+	QUI.setalphazeroframe(_G["PaperDollSidebarTab"..i].TabBg)
 end
 
-ReputationDetailCorner:Hide()
-ReputationDetailDivider:Hide()
-local regions = {ReputationDetailFrame.Border:GetRegions()}
+QUI.setalphazeroframe(ReputationDetailDivider)
+QUI.setalphazeroframe(ReputationDetailCorner)
 
-for i=1,#regions do
-   local region = regions[i]
-   if region:IsObjectType("Texture") then
-      region:Hide()
-   end
-end
-ReputationDetailFrame.Border.Bg:Show()
-TokenFramePopupCorner:Hide()
 
-for k,v in pairs(TokenFramePopup.Border) do
-	if type(k) == "string" and (k:find("Edge") or k:find("Corner")) and type(v) == "table" then
-		v:Hide()
-	end
+QUI.KillFrameBackgroundBySearch(ReputationDetailFrame.Border)
+
+QUI.setalphazeroframe(TokenFramePopupCorner)
+
+if TokenFramePopup then
+QUI.KillFrameBorderBySearch(TokenFramePopup.Border)
 end
 
 local skin_checkbox = QUI.skin_button
@@ -100,7 +55,8 @@ skin_checkbox(ReputationDetailMainScreenCheckBox)
 skin_checkbox(TokenFramePopupInactiveCheckBox)
 skin_checkbox(TokenFramePopupBackpackCheckBox)
 
-
+if CharacterModelFrame then
+CharacterModelFrame.BackgroundOverlay:Hide()
 local type = type
 for k,v in pairs(CharacterModelFrame) do
 	if type(k)=="string" and k:find("PaperDollInnerBorder") and type(v)=="table" then
@@ -116,3 +72,4 @@ function QUI:PaperDollBgDesaturate()
 end
 
 QUI:SecureHook("PaperDollBgDesaturate")
+end
