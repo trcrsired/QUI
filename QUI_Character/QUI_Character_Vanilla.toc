@@ -1,0 +1,7 @@
+## Interface: 11403
+## Author: cqwrteur
+## Title: QUI Character
+
+## Dependencies: QUI
+
+character.lua

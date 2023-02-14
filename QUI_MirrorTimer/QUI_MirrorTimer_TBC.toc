@@ -1,0 +1,7 @@
+## Interface: 20504
+## Author: cqwrteur
+## Title: QUI Mirror Timer
+
+## Dependencies: QUI
+
+mirrortimer.lua

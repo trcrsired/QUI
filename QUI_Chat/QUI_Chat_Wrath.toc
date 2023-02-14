@@ -1,0 +1,7 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI Chat
+
+## Dependencies: QUI
+
+chat.lua

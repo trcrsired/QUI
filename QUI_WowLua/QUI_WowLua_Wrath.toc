@@ -1,0 +1,6 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI WowLua
+## Dependencies: QUI, WowLua
+
+wowlua.lua

@@ -1,0 +1,7 @@
+## Interface: 20504
+## Author: cqwrteur
+## Title: QUI Chat
+
+## Dependencies: QUI
+
+chat.lua

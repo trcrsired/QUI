@@ -1,0 +1,8 @@
+## Interface: 11403
+## Author: cqwrteur
+## Title: QUI Social
+
+## Dependencies: QUI
+
+social.lua
+

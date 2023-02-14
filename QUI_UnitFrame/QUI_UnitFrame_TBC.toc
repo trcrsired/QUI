@@ -1,0 +1,7 @@
+## Interface: 20504
+## Author: cqwrteur
+## Title: QUI UnitFrame
+
+## Dependencies: QUI
+
+unitframe.lua

@@ -1,0 +1,10 @@
+## Interface: 20504
+## Author: cqwrteur
+## Title: QUI TalkingHead
+
+## Dependencies: QUI
+## LoadOnDemand: 1
+## X-QUI-LOD: Blizzard_TalkingHeadUI
+
+talkinghead.lua
+

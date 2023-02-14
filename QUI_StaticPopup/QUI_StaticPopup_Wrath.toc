@@ -1,0 +1,8 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI StaticPopup
+
+## Dependencies: QUI
+
+staticpopup.lua
+

@@ -1,0 +1,7 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI Tooltip
+
+## Dependencies: QUI
+
+tooltip.lua

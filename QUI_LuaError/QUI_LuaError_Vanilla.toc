@@ -1,0 +1,7 @@
+## Interface: 11403
+## Author: cqwrteur
+## Title: QUI Lua Error
+
+## Dependencies: QUI
+
+luaerror.lua

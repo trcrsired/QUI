@@ -1,0 +1,7 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI Action Bar
+
+## Dependencies: QUI
+
+actionbar.lua

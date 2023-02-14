@@ -1,0 +1,8 @@
+## Interface: 20504
+## Author: cqwrteur
+## Title: QUI Social
+
+## Dependencies: QUI
+
+social.lua
+

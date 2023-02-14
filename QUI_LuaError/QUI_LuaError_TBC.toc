@@ -1,0 +1,7 @@
+## Interface: 20504
+## Author: cqwrteur
+## Title: QUI Lua Error
+
+## Dependencies: QUI
+
+luaerror.lua

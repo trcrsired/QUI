@@ -1,0 +1,9 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI Encounter Journal
+
+## Dependencies: QUI
+## LoadOnDemand: 1
+## X-QUI-LOD: Blizzard_EncounterJournal
+
+encounterjournal.lua

@@ -1,0 +1,9 @@
+## Interface: 30401
+## Author: cqwrteur
+## Title: QUI Communities
+
+## Dependencies: QUI
+## LoadOnDemand: 1
+## X-QUI-LOD: Blizzard_Communities
+
+communities.lua
