@@ -51,6 +51,7 @@ do
 	ActionBarController:UnregisterAllEvents()
 --	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
 
+
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
 	MainMenuBar:SetScale(0.00001)
@@ -59,30 +60,47 @@ do
 	MicroButtonAndBagsBar:EnableMouse(false)
 	MicroButtonAndBagsBar:SetParent(UIHider)
 	MicroButtonAndBagsBar:Hide()
-	
-	MainMenuBarArtFrame:UnregisterAllEvents()
-	MainMenuBarArtFrame:Hide()
-	MainMenuBarArtFrame:SetParent(UIHider)
+
+	if MainMenuBarArtFrame then
+
+		MainMenuBarArtFrame:UnregisterAllEvents()
+		MainMenuBarArtFrame:Hide()
+		MainMenuBarArtFrame:SetParent(UIHider)
+
+	end
 
 	StatusTrackingBarManager:EnableMouse(false)
 	StatusTrackingBarManager:UnregisterAllEvents()
 	StatusTrackingBarManager:Hide()
 
+	if StanceBarFrame then
+
 	StanceBarFrame:UnregisterAllEvents()
 	StanceBarFrame:Hide()
 	StanceBarFrame:SetParent(UIHider)
+
+	end
 
 	OverrideActionBar:UnregisterAllEvents()
 	OverrideActionBar:Hide()
 	OverrideActionBar:SetParent(UIHider)
 
+	if PossessBarFrame then
+
 	PossessBarFrame:UnregisterAllEvents()
 	PossessBarFrame:Hide()
 	PossessBarFrame:SetParent(UIHider)
 
+	end
+
+
+	if PetActionBarFrame then
+
 	PetActionBarFrame:UnregisterAllEvents()
 	PetActionBarFrame:Hide()
 	PetActionBarFrame:SetParent(UIHider)
+
+	end
 
 	MultiCastActionBarFrame:UnregisterAllEvents()
 	MultiCastActionBarFrame:Hide()
@@ -90,11 +108,22 @@ do
 
 end
 
+local function get_action_bar_page()
+	local page
+	if MainMenuBarArtFrame then
+		page = MainMenuBarArtFrame:GetAttribute("actionpage")
+	end
+	if page == nil then
+		page = GetActionBarPage()
+	end
+	return page
+end
+
 local function action_button_onenter(actionbutton)
 	GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
 	local action = actionbutton:GetAttribute("action")
 	if action < 13 then
-		action = ((MainMenuBarArtFrame:GetAttribute("actionpage") or GetActionBarPage())-1)*12+action
+		action = (get_action_bar_page()-1)*12+action
 	end
 	GameTooltip:SetAction(action)
 end
@@ -228,8 +257,14 @@ local function maincofunc()
 		end
 		if macro then
 			RegisterStateDriver(frame, "page", "[possessbar] 12; [overridebar] 14; [shapeshift] 13; [form,noform] 0; [bar:1] 1; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6")
-			frame:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
-			frame:SetAttribute("_onstate-page", [[self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)]])
+			
+			if MainMenuBarArtFrame then
+				frame:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
+				frame:SetAttribute("_onstate-page", [[self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)]])
+			else
+				frame:SetFrameRef("MainMenuBar", MainMenuBar)
+				frame:SetAttribute("_onstate-page", [[self:GetFrameRef("MainMenuBar"):SetAttribute("actionpage", newstate)]])
+			end
 		end
 		return frame
 	end
@@ -295,7 +330,7 @@ local function maincofunc()
 			gcd = gcdt + 0.01
 		end
 		if 3 < tag then
-			local current_page = MainMenuBarArtFrame:GetAttribute("actionpage") or GetActionBarPage()
+			local current_page = get_action_bar_page()
 			for i=1,#cds do
 				local e = cds[i]
 				update(e,buttons[e],gtime,current_page)
@@ -306,7 +341,7 @@ local function maincofunc()
 			updaterange(169,extrabutton,current_page)
 			break
 		elseif tag == 3 then
-			local current_page = MainMenuBarArtFrame:GetAttribute("actionpage") or GetActionBarPage()
+			local current_page = get_action_bar_page()
 			for i=1,#buttons do
 				local j = i
 				if i < 13 then
@@ -364,7 +399,7 @@ local function maincofunc()
 		end
 		if tag == 1 then
 			wipe(cds)
-			local current_page = MainMenuBarArtFrame:GetAttribute("actionpage") or GetActionBarPage()
+			local current_page = get_action_bar_page()
 			for i=1,#buttons do
 				if update(i,buttons[i],gtime,current_page) then
 					cds[#cds+1] = i

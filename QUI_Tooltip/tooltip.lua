@@ -57,7 +57,7 @@ end
 
 QUI:SecureHook(GameTooltip,"SetUnitAura")
 
-function QUI:OnTooltipSetSpell(obj)
+local function GameTooltip_OnTooltipSetSpell_Hookfunction(obj)
 	if obj:IsForbidden() then return end
 	local spellName,spellID = obj:GetSpell()
 	if not spellID then return end
@@ -69,7 +69,14 @@ function QUI:OnTooltipSetSpell(obj)
 	obj:AddLine(spellID,0.5, 0.5, 0.8)
 end
 
-QUI:SecureHookScript(GameTooltip, "OnTooltipSetSpell")
+if TooltipDataProcessor then
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell,GameTooltip_OnTooltipSetSpell_Hookfunction)
+else
+function QUI:GameTooltip_OnTooltipSetSpell(obj)
+	GameTooltip_OnTooltipSetSpell_Hookfunction(obj)
+end
+QUI:SecureHookScript(GameTooltip, "GameTooltip_OnTooltipSetSpell")
+end
 
 local tooltips_frames = 
 {

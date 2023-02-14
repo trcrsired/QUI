@@ -7,11 +7,9 @@ QUI[1] = {}
 function QUI:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("QUIDB",{profile = {}},true)
 	local LibDualSpec = LibStub('LibDualSpec-1.0',true)
-	if LibDualSpec == nil then
-		LoadAddOn('LibDualSpec-1.0')
-		LibDualSpec = LibStub('LibDualSpec-1.0')
+	if LibDualSpec then
+		LibDualSpec:EnhanceDatabase(self.db, "QUI")
 	end
-	LibDualSpec:EnhanceDatabase(self.db, "QUI")
 	self:RegisterChatCommand("QUI", "ChatCommand")
 
 	self:RegisterEvent("ADDON_LOADED")
