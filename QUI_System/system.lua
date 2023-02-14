@@ -4,3 +4,7 @@ if VideoOptionsFrame then
 QUI.skin_naiveskinframe("VideoOptionsFrame")
 QUI.skin_naiveskinframe("InterfaceOptionsFrame")
 end
+
+if SettingsPanel then
+QUI.skin_naiveskinframe("SettingsPanel")
+end
