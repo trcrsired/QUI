@@ -15,7 +15,9 @@ end
 hide_left_right(CharacterMainHandSlot)
 hide_left_right(CharacterSecondaryHandSlot)
 
+if CharacterStatsPane then
 CharacterStatsPane.ClassBackground:SetAlpha(0)
+end
 
 QUI.KillFrameLMRBorder("CharacterFrameTab1")
 QUI.KillFrameLMRBorder("CharacterFrameTab2")
@@ -29,7 +31,10 @@ QUI.KillFrameLMRBorder(PaperDollEquipmentManagerPaneSaveSet)
 QUI.KillFrameLMRBorder(PaperDollEquipmentManagerPaneEquipSet)
 
 for i=1,3 do
-	QUI.setalphazeroframe(_G["PaperDollSidebarTab"..i].TabBg)
+	local tab = _G["PaperDollSidebarTab"..i]
+	if tab then
+		QUI.setalphazeroframe(tab.TabBg)
+	end
 end
 
 QUI.setalphazeroframe(ReputationDetailDivider)
@@ -54,7 +59,9 @@ skin_checkbox(TokenFramePopupInactiveCheckBox)
 skin_checkbox(TokenFramePopupBackpackCheckBox)
 
 if CharacterModelFrame then
+if CharacterModelFrame.BackgroundOverlay then
 CharacterModelFrame.BackgroundOverlay:Hide()
+end
 local type = type
 for k,v in pairs(CharacterModelFrame) do
 	if type(k)=="string" and k:find("PaperDollInnerBorder") and type(v)=="table" then
@@ -62,6 +69,7 @@ for k,v in pairs(CharacterModelFrame) do
 	end
 end
 
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 function QUI:PaperDollBgDesaturate()
 	CharacterModelFrameBackgroundTopLeft:SetDesaturated(false)
 	CharacterModelFrameBackgroundTopRight:SetDesaturated(false)
@@ -70,4 +78,5 @@ function QUI:PaperDollBgDesaturate()
 end
 
 QUI:SecureHook("PaperDollBgDesaturate")
+end
 end

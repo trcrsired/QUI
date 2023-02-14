@@ -9,8 +9,13 @@ local width,height=_G[MICRO_BUTTONS[1]]:GetSize()
 microbar:SetSize(width,height*#MICRO_BUTTONS)
 QUI.microbar = microbar
 local MICRO_BUTTONS = MICRO_BUTTONS
+
+if GuildMicroButton then
+
 GuildMicroButton.NotificationOverlay:SetAlpha(0)
 GuildMicroButton.NotificationOverlay:SetParent(QUI.UIHider)
+
+end
 
 local function on_enter()
 	for i=1,#MICRO_BUTTONS do

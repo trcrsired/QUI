@@ -1,10 +1,15 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
-local skinbutton = QUI.skin_button
 local Header = GameMenuFrame.Header
+if Header == nil then
+Header = GameMenuFrameHeader
+end
 Header:SetPoint("TOP",0,-3)
+
+if Header.LeftBG then
 Header.LeftBG:Hide()
 Header.CenterBG:Hide()
 Header.RightBG:Hide()
+
 local type = type
 GameMenuFrame.Border.Bg:SetVertexColor(0,0,0,0.4)
 for k,v in pairs(GameMenuFrame.Border) do
@@ -12,7 +17,7 @@ for k,v in pairs(GameMenuFrame.Border) do
 		v:Hide()
 	end
 end
-
+end
 local sb = QUI.skin_button
 sb(GameMenuButtonHelp)
 sb(GameMenuButtonStore)

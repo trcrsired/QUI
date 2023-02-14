@@ -1,8 +1,5 @@
-MerchantFrame.NineSlice:Hide()
-MerchantFrame.Bg:SetTexture(131071)
-MerchantFrame.TitleBg:SetTexture(131071)
-MerchantFrame.TopTileStreaks:Hide()
-MerchantFrameInset:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+QUI.skin_scrollframe(MerchantFrame)
 
 MerchantFrameTab1Left:SetAlpha(0)
 MerchantFrameTab1Middle:SetAlpha(0)

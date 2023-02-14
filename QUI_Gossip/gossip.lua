@@ -1,8 +1,6 @@
-GossipFrame.NineSlice:Hide()
-GossipFrameInset:Hide()
-GossipFrame.Bg:SetTexture(131071)
-GossipFrame.TitleBg:SetTexture(131071)
-GossipFrame.TopTileStreaks:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+QUI.KillFrameNineSlice(GossipFrame)
+
 GossipGreetingScrollFrameTop:SetAlpha(0)
 GossipGreetingScrollFrameMiddle:SetAlpha(0)
 GossipGreetingScrollFrameBottom:SetAlpha(0)
@@ -19,11 +17,7 @@ end
 
 skinbutton(GossipFrameGreetingGoodbyeButton)
 
-QuestFrame.NineSlice:Hide()
-QuestFrameInset:Hide()
-QuestFrame.Bg:SetTexture(131071)
-QuestFrame.TitleBg:SetTexture(131071)
-QuestFrame.TopTileStreaks:Hide()
+QUI.KillFrameNineSlice(QuestFrame)
 
 
 skinbutton(QuestFrameCompleteQuestButton)
