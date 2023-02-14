@@ -9,10 +9,15 @@ end
 local _G = _G
 for i=1,SPELLS_PER_PAGE do
 	local button=_G["SpellButton"..i]
-	button.IconTextureBg:SetTexCoord(0.1,0.9,0.1,0.9)
+	local IconTextureBg = button.IconTextureBg
+	if IconTextureBg then
+		button.IconTextureBg:SetTexCoord(0.1,0.9,0.1,0.9)
+	end
 	_G["SpellButton"..i.."IconTexture"]:SetTexCoord(0.1,0.9,0.1,0.9)
-	button.TextBackground:Hide()
-	button.TextBackground2:Hide()
+	if button.TextBackground then
+		button.TextBackground:Hide()
+		button.TextBackground2:Hide()
+	end
 end
 
 
@@ -29,9 +34,7 @@ for i=1,8 do
 	local tab = _G["SpellBookSkillLineTab"..i]
 	if tab then
 		QUI.TextureIcons(tab,"Interface\\SpellBook\\SpellBook-SkillLineTab")
-		tab:GetNormalTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-		tab:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-		_G["SpellBookSkillLineTab"..i.."TabardEmblem"]:SetAlpha(0)
+		QUI.setalphazeroframe(_G["SpellBookSkillLineTab"..i.."TabardEmblem"])
 	end
 end
 

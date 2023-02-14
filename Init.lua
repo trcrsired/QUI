@@ -84,3 +84,124 @@ function QUI.KillFrame(frame)
 		frame:SetAttribute("statehidden", true)
 	end
 end
+
+function QUI.KillFrameNineSlice(frame)
+	if frame == nil then
+		return
+	end
+	if frame.NineSlice then
+		frame.NineSlice:Hide()
+	end
+	if frame.Bg then
+		frame.Bg:SetTexture(131071)
+	end
+	if frame.TitleBg then
+		frame.TitleBg:SetTexture(131071)
+	end
+	if frame.TopTileStreaks then
+		frame.TopTileStreaks:SetAlpha(0)
+	end
+end
+
+function QUI.KillFrameBackgroundBySearch(frame,texture)
+	if frame == nil then
+		return
+	end
+	local regions = {frame:GetRegions()}
+	for i=1,#regions do
+		local region = regions[i]
+		if region:IsObjectType("Texture") and (texture == nil or region:GetTexture()==texture) then
+			region:SetAlpha(0)
+		end
+	end	
+end
+
+function QUI.setalphazeroframe(frame)
+	if frame == nil then
+		return
+	end
+	frame:SetAlpha(0)
+end
+
+function QUI.KillFrameLMRBorder(frame)
+	if frame == nil then
+		return
+	end
+	local tp = type(frame) == "string"
+	local setalphazeroframe = QUI.setalphazeroframe
+	if tp then
+		setalphazeroframe(_G[frame.."Left"])
+		setalphazeroframe(_G[frame.."LeftDisabled"])
+		setalphazeroframe(_G[frame.."Middle"])
+		setalphazeroframe(_G[frame.."MiddleDisabled"])
+		setalphazeroframe(_G[frame.."Right"])
+		setalphazeroframe(_G[frame.."RightDisabled"])
+	else
+		setalphazeroframe(frame.Left)
+		setalphazeroframe(frame.LeftDisabled)
+		setalphazeroframe(frame.Middle)
+		setalphazeroframe(frame.MiddleDisabled)
+		setalphazeroframe(frame.Right)
+		setalphazeroframe(frame.RightDisabled)
+	end
+end
+
+function QUI.KillFrameBorderInset(frame)
+	if frame == nil then
+		return
+	end
+	local tp = type(frame) == "string"
+	local setalphazeroframe = QUI.setalphazeroframe
+	if tp then
+		setalphazeroframe(_G[frame.."Border"])
+		setalphazeroframe(_G[frame.."Inset"])
+	else
+		setalphazeroframe(frame.Border)
+		setalphazeroframe(frame.Inset)
+	end
+end
+
+function QUI.TextureIcons(frame)
+	if frame == nil then
+		return
+	end
+	local icon = frame.icon
+	if icon then
+		icon:SetTexCoord(0.1,0.9,0.1,0.9)
+	end
+	local iconborder = frame.IconBorder
+	if iconborder then
+		frame.IconBorder:SetAlpha(0)
+	end
+	if frame.SetNormalTexture then
+		frame:SetNormalTexture("")
+	end
+end
+
+function QUI.skin_texture_cord(texture)
+	if texture == nil then
+		return
+	end
+	local SetTexCoord = texture.SetTexCoord
+	if texture.SetTexCoord then
+		texture:SetTexCoord(0.22, 0.7, 0.28, 0.7)
+	end
+end
+
+function QUI.skin_button(box)
+	if box == nil then
+		return
+	end
+	if box.GetNormalTexture then
+		QUI.skin_texture_cord(box:GetNormalTexture())
+	end
+	if box.GetPushedTexture then
+		QUI.skin_texture_cord(box:GetPushedTexture())
+	end
+	if box.GetHighlightTexture then
+		QUI.skin_texture_cord(box:GetHighlightTexture())
+	end
+	if box.GetDisabledTexture then
+		QUI.skin_texture_cord(box:GetDisabledTexture())
+	end
+end
