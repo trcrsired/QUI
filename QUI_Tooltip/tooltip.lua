@@ -27,11 +27,12 @@ for k,v in pairs(QueueStatusFrame) do
 	end
 end
 ]]
-
+if QuestScrollFrame then
 for k,v in pairs(QuestScrollFrame) do
 	if type(k) == "string" and k:find("Tooltip") and type(v)=="table" then
 		QUI:SharedTooltip_SetBackdropStyle(v)
 	end
+end
 end
 
 function QUI:SetUnitAura(obj, ...)
@@ -72,10 +73,7 @@ end
 if TooltipDataProcessor then
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell,GameTooltip_OnTooltipSetSpell_Hookfunction)
 else
-function QUI:GameTooltip_OnTooltipSetSpell(obj)
-	GameTooltip_OnTooltipSetSpell_Hookfunction(obj)
-end
-QUI:SecureHookScript(GameTooltip, "GameTooltip_OnTooltipSetSpell")
+QUI:SecureHook("GameTooltip_OnTooltipSetSpell",GameTooltip_OnTooltipSetSpell_Hookfunction)
 end
 
 local tooltips_frames = 
