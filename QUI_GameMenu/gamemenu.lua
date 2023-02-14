@@ -1,3 +1,5 @@
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+local skinbutton = QUI.skin_button
 local Header = GameMenuFrame.Header
 Header:SetPoint("TOP",0,-3)
 Header.LeftBG:Hide()
@@ -11,14 +13,18 @@ for k,v in pairs(GameMenuFrame.Border) do
 	end
 end
 
-local buttons = {GameMenuButtonHelp,GameMenuButtonStore,GameMenuButtonWhatsNew,GameMenuButtonOptions,GameMenuButtonUIOptions,GameMenuButtonKeybindings,
-GameMenuButtonMacros,GameMenuButtonAddons,GameMenuButtonRatings,GameMenuButtonLogout,GameMenuButtonQuit,GameMenuButtonContinue}
-
-for i=1,#buttons do
-	local v = buttons[i]
-	v.Left:SetAlpha(0)
-	v.Middle:SetAlpha(0)
-	v.Right:SetAlpha(0)
-	v:SetNormalTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
-	v:SetHighlightTexture([[Interface\DialogFrame\UI-DialogBox-Gold-Background]])
-end
+local sb = QUI.skin_button
+sb(GameMenuButtonHelp)
+sb(GameMenuButtonStore)
+sb(GameMenuButtonWhatsNew)
+sb(GameMenuButtonMacros)
+sb(GameMenuButtonAddons)
+sb(GameMenuButtonRatings)
+sb(GameMenuButtonLogout)
+sb(GameMenuButtonQuit)
+sb(GameMenuButtonContinue)
+sb(GameMenuButtonOptions)
+sb(GameMenuButtonUIOptions)
+sb(GameMenuButtonKeybindings)
+sb(GameMenuButtonSettings)
+sb(GameMenuButtonEditMode)
