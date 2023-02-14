@@ -63,3 +63,20 @@ function QUI.resume(current,...)
 	end
 	return current_status
 end
+
+function QUI.KillFrame(frame)
+	if frame == nil then
+		return
+	end
+	local hasevent = frame.UnregisterAllEvents
+	if hasevent then
+		frame:UnregisterAllEvents()
+	end
+	frame:SetAlpha(0)
+	frame:SetScale(0.00001)
+	frame:SetParent(QUI.UIHider)
+	local hasmouse = frame.EnableMouse
+	if hasmouse then
+		frame:EnableMouse(false)
+	end
+end

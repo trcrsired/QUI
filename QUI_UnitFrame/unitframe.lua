@@ -1,18 +1,9 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local UnitFrame = QUI:NewModule("UnitFrame","AceEvent-3.0")
 
-do
-	local UIHider = QUI.UIHider
-	PlayerFrame:SetParent(UIHider)
-	PlayerFrame:Hide()
-	PlayerFrame:UnregisterAllEvents()
-	TargetFrame:SetParent(UIHider)
-	TargetFrame:Hide()
-	TargetFrame:UnregisterAllEvents()
-	PartyFrame:SetParent(UIHider)
-	PartyFrame:Hide()
-	PartyFrame:UnregisterAllEvents()
-end
+QUI.KillFrame(PlayerFrame)
+QUI.KillFrame(TargetFrame)
+QUI.KillFrame(PartyFrame)
 
 local function cofunc(unit,left,...)
 	local realframe = CreateFrame("Frame",nil,UIParent)

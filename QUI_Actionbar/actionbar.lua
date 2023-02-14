@@ -51,61 +51,17 @@ do
 	ActionBarController:UnregisterAllEvents()
 --	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
 
-
-	MainMenuBar:EnableMouse(false)
-	MainMenuBar:SetAlpha(0)
-	MainMenuBar:SetScale(0.00001)
-	MainMenuBar:SetParent(UIHider)
---	MicroButtonAndBagsBar:SetScale(0.00001)
-	MicroButtonAndBagsBar:EnableMouse(false)
-	MicroButtonAndBagsBar:SetParent(UIHider)
-	MicroButtonAndBagsBar:Hide()
-
-	if MainMenuBarArtFrame then
-
-		MainMenuBarArtFrame:UnregisterAllEvents()
-		MainMenuBarArtFrame:Hide()
-		MainMenuBarArtFrame:SetParent(UIHider)
-
-	end
-
-	StatusTrackingBarManager:EnableMouse(false)
-	StatusTrackingBarManager:UnregisterAllEvents()
-	StatusTrackingBarManager:Hide()
-
-	if StanceBarFrame then
-
-	StanceBarFrame:UnregisterAllEvents()
-	StanceBarFrame:Hide()
-	StanceBarFrame:SetParent(UIHider)
-
-	end
-
-	OverrideActionBar:UnregisterAllEvents()
-	OverrideActionBar:Hide()
-	OverrideActionBar:SetParent(UIHider)
-
-	if PossessBarFrame then
-
-	PossessBarFrame:UnregisterAllEvents()
-	PossessBarFrame:Hide()
-	PossessBarFrame:SetParent(UIHider)
-
-	end
-
-
-	if PetActionBarFrame then
-
-	PetActionBarFrame:UnregisterAllEvents()
-	PetActionBarFrame:Hide()
-	PetActionBarFrame:SetParent(UIHider)
-
-	end
-
-	MultiCastActionBarFrame:UnregisterAllEvents()
-	MultiCastActionBarFrame:Hide()
-	MultiCastActionBarFrame:SetParent(UIHider)
-
+	local KillFrame = QUI.KillFrame
+	KillFrame(MainMenuBar)
+	KillFrame(MicroButtonAndBagsBar)
+	KillFrame(MainMenuBarArtFrame)
+	KillFrame(StatusTrackingBarManager)
+	KillFrame(StatusTrackingBarManager)
+	KillFrame(StanceBarFrame)
+	KillFrame(OverrideActionBar)
+	KillFrame(PossessBarFrame)
+	KillFrame(PetActionBarFrame)
+	KillFrame(MultiCastActionBarFrame)
 end
 
 local function get_action_bar_page()
