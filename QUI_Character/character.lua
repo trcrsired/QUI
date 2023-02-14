@@ -17,8 +17,6 @@ hide_left_right(CharacterSecondaryHandSlot)
 
 CharacterStatsPane.ClassBackground:SetAlpha(0)
 
-QUI.skin_buttons_in_frame("PaperDollInnerBorder")
-
 QUI.KillFrameLMRBorder("CharacterFrameTab1")
 QUI.KillFrameLMRBorder("CharacterFrameTab2")
 QUI.KillFrameLMRBorder("CharacterFrameTab3")

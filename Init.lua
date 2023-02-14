@@ -300,12 +300,11 @@ function QUI.skin_buttons_in_frame(frame)
 	for i=1,#slots do
 		local slot=slots[i]
 		if slot:IsObjectType("Button") or slot:IsObjectType("ItemButton") then
-			_G[slot:GetName().."Frame"]:Hide()
+			QUI.setalphazeroframe(_G[slot:GetName().."Frame"])
 			slot:SetNormalTexture("")
 			slot:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
 			slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-			slot.IconBorder:SetAlpha(0)
-			slot.icon:SetTexCoord(0.1,0.9,0.1,0.9)
+			QUI.TextureIcons(slot)
 		end
 	end
 end
