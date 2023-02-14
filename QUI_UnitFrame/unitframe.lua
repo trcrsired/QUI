@@ -9,7 +9,9 @@ do
 	TargetFrame:SetParent(UIHider)
 	TargetFrame:Hide()
 	TargetFrame:UnregisterAllEvents()
-	HidePartyFrame()
+	PartyFrame:SetParent(UIHider)
+	PartyFrame:Hide()
+	PartyFrame:UnregisterAllEvents()
 end
 
 local function cofunc(unit,left,...)
