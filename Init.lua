@@ -205,3 +205,48 @@ function QUI.skin_button(box)
 		QUI.skin_texture_cord(box:GetDisabledTexture())
 	end
 end
+
+function QUI.skin_dropdown(dropdownstr)
+	if dropdownstr == nil then
+		return
+	end
+	local tb = _G[dropdownstr]
+	local left = _G[dropdownstr.."Left"]
+	if left == nil then
+		left = tb.left
+	end
+
+	local middle = _G[dropdownstr.."Middle"]
+	if middle == nil then
+		middle = tb.middle
+	end
+
+	local right = _G[dropdownstr.."Right"]
+	if right == nil then
+		right = tb.right
+	end
+
+	if left then
+		left:SetAlpha(0)
+	end
+	if middle then
+		middle:SetTexture("Interface\\Common\\Common-Input-Border")
+		middle:SetHeight(20)
+		middle:SetTexCoord(0.0625,0.9375,0.1,0.525)
+	end
+	if right then
+		right:SetAlpha(0)
+	end
+end
+
+function QUI.skin_scrollframe(scollframe)
+	if scollframe == nil then
+		return
+	end
+	local tb = _G[scollframe]
+	QUI.KillFrameNineSlice(tb)
+	QUI.setalphazeroframe(_G[scollframe.."ScrollFrame"])
+	QUI.setalphazeroframe(tb.ScrollBox)
+	QUI.setalphazeroframe(_G[scollframe.."Inset"])
+	QUI.setalphazeroframe(tb.inset)
+end
