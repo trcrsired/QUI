@@ -1,6 +1,15 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local minimap = QUI:NewModule("Minimap","AceEvent-3.0")
 Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
+local QUI_KillFrame = QUI.KillFrame
+QUI_KillFrame(MinimapBorder)
+QUI_KillFrame(MinimapBorderTop)
+QUI_KillFrame(MiniMapWorldMapButton)
+QUI_KillFrame(MinimapNorthTag)
+QUI_KillFrame(GameTimeFrame)
+QUI_KillFrame(MinimapZoomIn)
+QUI_KillFrame(MinimapZoomOut)
+--[[
 MinimapBorder:Hide()
 MinimapBorderTop:Hide()
 MiniMapWorldMapButton:Hide()
@@ -13,7 +22,7 @@ MinimapZoomIn:SetParent(QUI.UIHider)
 MinimapZoomOut:SetAlpha(0)
 MinimapZoomOut:SetScale(0.0001)
 MinimapZoomOut:SetParent(QUI.UIHider)
-
+]]
 Minimap:EnableMouseWheel(true)
 Minimap:SetScript("OnMouseWheel",function(self,val,...)
 	local zoom = Minimap:GetZoom() + val
@@ -22,8 +31,10 @@ Minimap:SetScript("OnMouseWheel",function(self,val,...)
 	end
 	Minimap:SetZoom(zoom)
 end)
-
-GarrisonLandingPageMinimapButton:SetAlpha(0)
+local GarrisonLandingPageMinimapButton = GarrisonLandingPageMinimapButton
+if GarrisonLandingPageMinimapButton then
+	GarrisonLandingPageMinimapButton:SetAlpha(0)
+end
 function GetMinimapShape() return 'SQUARE' end
 
 function minimap:OnEnable()

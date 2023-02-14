@@ -16,7 +16,7 @@ local function cofunc()
 			QUI.resume(running,tag,event,unit,ue)
 		end
 	end
-	QUI.RegisterEvent(eventer,"UNIT_HEALTH_FREQUENT",unit_event_resume,2)
+	QUI.RegisterEvent(eventer,"UNIT_HEALTH",unit_event_resume,2)
 --	C_NamePlate.SetNamePlateFriendlySize(80,5)
 --	C_NamePlate.SetNamePlateEnemySize(80,5)
 	local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit

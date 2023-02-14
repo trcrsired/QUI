@@ -94,7 +94,10 @@ local function cogameinfo()
 				GameTooltip:ClearLines()
 				local netdown, netup, netlagHome, netlagWorld = GetNetStats()
 				local string_format = string.format
-				GameTooltip:AddLine(string_format("%g/%g/%g",GetAverageItemLevel()),0.5, 0.5, 0.8,true)
+				local GetAverageItemLevel = GetAverageItemLevel
+				if GetAverageItemLevel then
+					GameTooltip:AddLine(string_format("%g/%g/%g",GetAverageItemLevel()),0.5, 0.5, 0.8,true)
+				end
 				GameTooltip:AddDoubleLine(string_format("%g↓",netdown),string_format("%g↑",netup),0.5,0.5,0.8,  0.5, 0.5, 0.8,true)
 				local homeip,worldip = GetNetIpTypes()
 				GameTooltip:AddDoubleLine(HOME..(homeip==1 and ":IPv4" or ":IPv6"),netlagHome,0.5,0.5,0.8,0.5,0.5,0.8,true)

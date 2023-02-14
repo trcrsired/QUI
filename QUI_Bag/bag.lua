@@ -63,6 +63,9 @@ for i=1,13 do
 end
 
 local function skin_auto_sort_button(button)
+	if button == nil then
+		return
+	end
 	button:GetNormalTexture():SetTexCoord(0.2,0.8,0.2,0.8)
 	button:GetHighlightTexture():SetTexCoord(0.2,0.8,0.2,0.8)
 	button:GetPushedTexture():SetTexCoord(0.2,0.8,0.2,0.8)
@@ -71,11 +74,18 @@ end
 skin_auto_sort_button(BagItemAutoSortButton)
 skin_auto_sort_button(BankItemAutoSortButton)
 
-local selljunkbutton=CreateFrame("BUTTON",nil,ContainerFrame1)
+
+local selljunkbutton=CreateFrame("Button",nil,ContainerFrame1)
 QUI.selljunkbutton = selljunkbutton
-selljunkbutton:SetSize(25,25)
+selljunkbutton:SetSize(20,20)
 selljunkbutton:SetNormalAtlas("bags-junkcoin")
-selljunkbutton:SetPoint("RIGHT",BagItemSearchBox,"LEFT",-4,-5)
+local BagItemSearchBox = BagItemSearchBox
+if BagItemSearchBox == nil then
+	selljunkbutton:SetPoint("TOPLEFT",ContainerFrame1,"TOP",0,-25)
+else
+	selljunkbutton:SetPoint("RIGHT",BagItemSearchBox,"LEFT",-4,-5)
+end
+
 selljunkbutton:SetScript("OnClick",function()
 	if GetMerchantItemInfo(1) then
 		local GetContainerItemInfo = GetContainerItemInfo
@@ -98,85 +108,54 @@ end)
 selljunkbutton:SetScript("OnLeave",function()
 	GameTooltip:Hide()
 end)
+selljunkbutton:Show()
 
 local function skin_item_search_box(box)
+	if box == nil then
+		return
+	end
 	box.Left:Hide()
 	box.Middle:Hide()
 	box.Right:Hide()
 end
 
-BankFrame.NineSlice:Hide()
-BankFrame.Bg:SetTexture(131071)
-BankFrame.TitleBg:SetTexture(131071)
-BankFrame.TopTileStreaks:SetAlpha(0)
+QUI.KillFrameNineSlice(BankFrame)
 
 skin_item_search_box(BagItemSearchBox)
 skin_item_search_box(BankItemSearchBox)
+QUI.KillFrameBackgroundBySearch(BankSlotsFrame)
+QUI.KillFrameBackgroundBySearch(BankFrame,"Interface\\BankFrame\\Bank-Background")
 
-local function remove_shadow(frame)
-	local regions = {frame:GetRegions()}
-	for i=1,#regions do
-		local region = regions[i]
-		if region:IsObjectType("Texture") then
-			region:SetAlpha(0)
-		end
-	end
-end
-remove_shadow(BankSlotsFrame)
+QUI.KillFrameLMRBorder(BankFrameTab1)
+QUI.KillFrameLMRBorder(BankFrameTab2)
 
-local regions = {BankFrame:GetRegions()}
-for i=1,#regions do
-	local region = regions[i]
-	if region:IsObjectType("Texture") and region:GetTexture()=="Interface\\BankFrame\\Bank-Background" then
-		region:SetAlpha(0)
-	end
-end
-
-
-BankFrameTab1Left:SetAlpha(0)
-BankFrameTab1Middle:SetAlpha(0)
-BankFrameTab1Right:SetAlpha(0)
-BankFrameTab1LeftDisabled:SetAlpha(0)
-BankFrameTab1MiddleDisabled:SetAlpha(0)
-BankFrameTab1RightDisabled:SetAlpha(0)
-
-BankFrameTab2Left:SetAlpha(0)
-BankFrameTab2Middle:SetAlpha(0)
-BankFrameTab2Right:SetAlpha(0)
-BankFrameTab2LeftDisabled:SetAlpha(0)
-BankFrameTab2MiddleDisabled:SetAlpha(0)
-BankFrameTab2RightDisabled:SetAlpha(0)
-BankFrameMoneyFrameBorder:SetAlpha(0)
-BankFrameMoneyFrameInset:SetAlpha(0)
+QUI.KillFrameBorderInset(BankFrameMoneyFrame)
 
 
 local BankSlotsFrame = BankSlotsFrame
 for i=1,7 do
-	local bank_slot = BankSlotsFrame["Bag"..i]
-	bank_slot.icon:SetTexCoord(0.1,0.9,0.1,0.9)
-	bank_slot.IconBorder:SetAlpha(0)
-	bank_slot:SetNormalTexture("")
+	QUI.TextureIcons(BankSlotsFrame["Bag"..i])
 end
 
 for i=1,NUM_BANKGENERIC_SLOTS do
-	local item_slot = BankSlotsFrame["Item"..i]
-	item_slot.icon:SetTexCoord(0.1,0.9,0.1,0.9)
-	item_slot.IconBorder:SetAlpha(0)
-	item_slot:SetNormalTexture("")
+	QUI.TextureIcons(BankSlotsFrame["Item"..i])
 end
 
+if ReagentBankFrame then
 QUI:SecureHookScript(ReagentBankFrame,"OnShow",function()
 	remove_shadow(ReagentBankFrame)
 	for i=1,98 do
-		local item_slot = ReagentBankFrame["Item"..i]
-		item_slot.icon:SetTexCoord(0.1,0.9,0.1,0.9)
-		item_slot.IconBorder:SetAlpha(0)
-		item_slot:SetNormalTexture("")
+		QUI.TextureIcons(ReagentBankFrame["Item"..i])
 	end
 	QUI:Unhook(ReagentBankFrame,"OnShow")
 end)
 
+local DespositButton = ReagentBankFrame.DespositButton
+
+if DespositButton then
 ReagentBankFrame.DespositButton.Left:SetAlpha(0)
 ReagentBankFrame.DespositButton.Right:SetAlpha(0)
 ReagentBankFrame.DespositButton.Middle:SetVertexColor(0,0,0,1)
 ReagentBankFrame.DespositButton:SetHighlightTexture("")
+end
+end
