@@ -1,12 +1,10 @@
-SpellBookFrame.NineSlice:Hide()
-SpellBookFrameInset:Hide()
-SpellBookFrame.Bg:SetTexture(131071)
-if SpellBookFrame.TitleBg then
-	SpellBookFrame.TitleBg:SetTexture(131071)
-end
-SpellBookFrame.TopTileStreaks:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+
+QUI.KillFrameNineSlice(SpellBookFrame)
+if SpellBookPage1 then
 SpellBookPage1:Hide()
 SpellBookPage2:Hide()
+end
 
 local _G = _G
 for i=1,SPELLS_PER_PAGE do
@@ -22,43 +20,20 @@ if SpellBookFrame.Tabs then
 	for _,widget in pairs(SpellBookFrame.Tabs) do
 		widget:SetAlpha(0)
 	end
-else
-SpellBookFrameTabButton1Left:SetAlpha(0)
-
-SpellBookFrameTabButton1Middle:SetAlpha(0)
-SpellBookFrameTabButton1Right:SetAlpha(0)
-SpellBookFrameTabButton1LeftDisabled:SetAlpha(0)
-SpellBookFrameTabButton1MiddleDisabled:SetAlpha(0)
-SpellBookFrameTabButton1RightDisabled:SetAlpha(0)
-
-SpellBookFrameTabButton2Left:SetAlpha(0)
-SpellBookFrameTabButton2Middle:SetAlpha(0)
-SpellBookFrameTabButton2Right:SetAlpha(0)
-SpellBookFrameTabButton2LeftDisabled:SetAlpha(0)
-SpellBookFrameTabButton2MiddleDisabled:SetAlpha(0)
-SpellBookFrameTabButton2RightDisabled:SetAlpha(0)
 end
+
+QUI.KillFrameLMRBorder(SpellBookFrameTabButton1)
+QUI.KillFrameLMRBorder(SpellBookFrameTabButton2)
 
 for i=1,8 do
 	local tab = _G["SpellBookSkillLineTab"..i]
-	local regions = {tab:GetRegions()}
-	for j=1,#regions do
-		local region = regions[j]
-		if region:IsObjectType("Texture") and region:GetTexture()=="Interface\\SpellBook\\SpellBook-SkillLineTab" then
-			region:SetAlpha(0)
-		end
+	if tab then
+		QUI.TextureIcons(tab,"Interface\\SpellBook\\SpellBook-SkillLineTab")
+		tab:GetNormalTexture():SetTexCoord(0.1,0.9,0.1,0.9)
+		tab:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
+		_G["SpellBookSkillLineTab"..i.."TabardEmblem"]:SetAlpha(0)
 	end
-	tab:GetNormalTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-	tab:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-	_G["SpellBookSkillLineTab"..i.."TabardEmblem"]:SetAlpha(0)
 end
 
-local function skin_button(box)
-	box:GetNormalTexture():SetTexCoord(0.22, 0.7, 0.28, 0.7)
-	box:GetPushedTexture():SetTexCoord(0.22, 0.7, 0.28, 0.7)
-	box:GetHighlightTexture():SetTexCoord(0.22, 0.7, 0.28, 0.7)
-	box:GetDisabledTexture():SetTexCoord(0.22, 0.7, 0.28 ,0.7)
-end
-
-skin_button(SpellBookPrevPageButton)
-skin_button(SpellBookNextPageButton)
+QUI.skin_button(SpellBookPrevPageButton)
+QUI.skin_button(SpellBookNextPageButton)
