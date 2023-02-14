@@ -1,7 +1,10 @@
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local BorderFrame = WorldMapFrame.BorderFrame
-WorldMapFrame.BorderFrame.TitleBg:Hide()
 
-WorldMapFrame.BorderFrame.NineSlice:Hide()
+QUI.KillFrameNineSlice(BorderFrame)
+
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+
 for k,v in pairs(WorldMapFrame.NavBar) do
    if type(k)=="string" and k:find("InsetBorder") then
       v:Hide()
@@ -114,3 +117,5 @@ end
 
 
 QUI:RegisterMessage("QUI_WorldMapFrame_ScrollContainer_OnEnter")
+
+end
