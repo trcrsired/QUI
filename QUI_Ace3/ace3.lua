@@ -144,7 +144,7 @@ function Ace3:ADDON_LOADED()
 	if not AceConfigDialog then return end
 	local popup = AceConfigDialog.popup
 	if popup and not popup.qui_skinned then
-		if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+		if popup.SetBackdropBorderColor then
 			popup:SetBackdropBorderColor(0,0,0,0)
 		else
 			popup:GetChildren():Hide()

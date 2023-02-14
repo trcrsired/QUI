@@ -2,10 +2,9 @@
 InlineGroup Container
 Simple container widget that creates a visible "box" with an optional title.
 -------------------------------------------------------------------------------]]
-print("Hello WOrld")
 local Type, Version = "InlineGroup", 100022
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
-if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
+if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) > Version - 100000 then return end
 
 -- Lua APIs
 local pairs = pairs
@@ -61,7 +60,6 @@ Constructor
 -------------------------------------------------------------------------------]]
 local PaneBackdrop  = {
 	bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
 	tile = true, tileSize = 16, edgeSize = 16,
 	insets = { left = 3, right = 3, top = 5, bottom = 3 }
 }
