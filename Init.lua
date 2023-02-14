@@ -79,4 +79,8 @@ function QUI.KillFrame(frame)
 	if hasmouse then
 		frame:EnableMouse(false)
 	end
+	local hassetattribute = frame.SetAttribute
+	if hassetattribute then
+		frame:SetAttribute("statehidden", true)
+	end
 end

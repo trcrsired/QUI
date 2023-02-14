@@ -2,56 +2,31 @@ local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local ActionBar = QUI:NewModule("ActionBar","AceEvent-3.0")
 
 do
-	local UIHider = QUI.UIHider
-	-- Hide MultiBar Buttons, but keep the bars alive
-	MultiBarBottomLeft:SetParent(UIHider)
-	MultiBarBottomRight:SetParent(UIHider)
-	MultiBarLeft:SetParent(UIHider)
-	MultiBarRight:SetParent(UIHider)
-
+	local KillFrame = QUI.KillFrame
+	KillFrame(MultiBarBottomLeft)
+	KillFrame(MultiBarBottomRight)
+	KillFrame(MultiBarLeft)
+	KillFrame(MultiBarRight)
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for i=1,12 do
-		_G["ActionButton" .. i]:Hide()
-		_G["ActionButton" .. i]:UnregisterAllEvents()
-		_G["ActionButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarBottomLeftButton" .. i]:Hide()
-		_G["MultiBarBottomLeftButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarBottomLeftButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarBottomRightButton" .. i]:Hide()
-		_G["MultiBarBottomRightButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarBottomRightButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarRightButton" .. i]:Hide()
-		_G["MultiBarRightButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarRightButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarLeftButton" .. i]:Hide()
-		_G["MultiBarLeftButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarLeftButton" .. i]:SetAttribute("statehidden", true)
-
-		if _G["VehicleMenuBarActionButton" .. i] then
-			_G["VehicleMenuBarActionButton" .. i]:Hide()
-			_G["VehicleMenuBarActionButton" .. i]:UnregisterAllEvents()
-			_G["VehicleMenuBarActionButton" .. i]:SetAttribute("statehidden", true)
-		end
-
-		if _G['OverrideActionBarButton'..i] then
-			_G['OverrideActionBarButton'..i]:Hide()
-			_G['OverrideActionBarButton'..i]:UnregisterAllEvents()
-			_G['OverrideActionBarButton'..i]:SetAttribute("statehidden", true)
-		end
-
-		_G['MultiCastActionButton'..i]:Hide()
-		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
-		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
+		KillFrame(_G["ActionButton" .. i])
+		KillFrame(_G["MultiBarBottomLeftButton" .. i])
+		KillFrame(_G["MultiBarBottomRightButton" .. i])
+		KillFrame(_G["MultiBarLeftButton" .. i])
+		KillFrame(_G["MultiBarRightButton" .. i])
+		KillFrame(_G["VehicleMenuBarActionButton" .. i])
+		KillFrame(_G["OverrideActionBarButton" .. i])
+		KillFrame(_G["MultiCastActionButton" .. i])
 	end
-	MicroButtonAndBagsBar:Show()
-	ActionBarController:UnregisterAllEvents()
+	if MicroButtonAndBagsBar then
+		MicroButtonAndBagsBar:Show()
+	end
+	if ActionBarController then
+		ActionBarController:UnregisterAllEvents()
+	end
 --	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
 
-	local KillFrame = QUI.KillFrame
+
 	KillFrame(MainMenuBar)
 	KillFrame(MicroButtonAndBagsBar)
 	KillFrame(MainMenuBarArtFrame)
