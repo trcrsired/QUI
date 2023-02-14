@@ -39,8 +39,11 @@ local function skinbutton(button)
 	button:HookScript("OnLeave",on_leave)
 end
 
-MainMenuBarBackpackButton:ClearAllPoints()
-MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT",UIParent,"BOTTOMRIGHT",0,0)
+if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+	MainMenuBarBackpackButton:ClearAllPoints()
+	MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT",UIParent,"BOTTOMRIGHT",0,0)
+end
+
 skinbutton(MainMenuBarBackpackButton)
 
 for i=0,3 do
