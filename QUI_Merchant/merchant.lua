@@ -4,10 +4,10 @@ QUI.skin_scrollframe(MerchantFrame)
 QUI.KillFrameLMRBorder(MerchantFrameTab1)
 QUI.KillFrameLMRBorder(MerchantFrameTab2)
 
-MerchantExtraCurrencyInset:SetAlpha(0)
-MerchantMoneyInset:SetAlpha(0)
+QUI.setalphazeroframe(MerchantExtraCurrencyInset)
+QUI.setalphazeroframe(MerchantMoneyInset)
 
-BuybackBG:SetAlpha(0)
+QUI.setalphazeroframe(BuybackBG)
 MerchantFrameBottomLeftBorder:SetAlpha(0)
 MerchantFrameBottomRightBorder:SetAlpha(0)
 
