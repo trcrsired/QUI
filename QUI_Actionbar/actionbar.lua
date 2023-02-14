@@ -8,8 +8,11 @@ do
 	KillFrame(MultiBarLeft)
 	KillFrame(MultiBarRight)
 	-- Hide MultiBar Buttons, but keep the bars alive
+
 	for i=1,12 do
-		KillFrame(_G["ActionButton" .. i])
+		if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+			KillFrame(_G["ActionButton" .. i])
+		end
 		KillFrame(_G["MultiBarBottomLeftButton" .. i])
 		KillFrame(_G["MultiBarBottomRightButton" .. i])
 		KillFrame(_G["MultiBarLeftButton" .. i])
@@ -21,14 +24,16 @@ do
 	if MicroButtonAndBagsBar then
 		MicroButtonAndBagsBar:Show()
 	end
+
 	if ActionBarController then
 		ActionBarController:UnregisterAllEvents()
 	end
 --	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
 
-
 	KillFrame(MainMenuBar)
-	KillFrame(MicroButtonAndBagsBar)
+	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+		KillFrame(MicroButtonAndBagsBar)
+	end
 	KillFrame(MainMenuBarArtFrame)
 	KillFrame(StatusTrackingBarManager)
 	KillFrame(StatusTrackingBarManager)

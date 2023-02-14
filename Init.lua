@@ -85,21 +85,38 @@ function QUI.KillFrame(frame)
 	end
 end
 
+function QUI.setalphazeroframe(frame)
+	if frame == nil then
+		return
+	end
+	if frame.SetAlpha == nil then
+		return
+	end
+	frame:SetAlpha(0)
+end
+
 function QUI.KillFrameNineSlice(frame)
 	if frame == nil then
 		return
 	end
-	if frame.NineSlice then
-		frame.NineSlice:Hide()
-	end
+	local setalphazeroframe = QUI.setalphazeroframe
+	setalphazeroframe(frame.NineSlice)
+	setalphazeroframe(frame.topLeftCorner)
+	setalphazeroframe(frame.topRightCorner)
+	setalphazeroframe(frame.bottomLeftCorner)
+	setalphazeroframe(frame.bottomRightCorner)
+	setalphazeroframe(frame.topEdge)
+	setalphazeroframe(frame.bottomEdge)
+	setalphazeroframe(frame.leftEdge)
+	setalphazeroframe(frame.rightEdge)
+	setalphazeroframe(frame.center)
+
+	setalphazeroframe(frame.TopTileStreaks)
 	if frame.Bg then
 		frame.Bg:SetTexture(131071)
 	end
 	if frame.TitleBg then
 		frame.TitleBg:SetTexture(131071)
-	end
-	if frame.TopTileStreaks then
-		frame.TopTileStreaks:SetAlpha(0)
 	end
 end
 
@@ -125,13 +142,6 @@ function QUI.KillFrameBorderBySearch(frame)
 			v:SetAlpha(0)
 		end
 	end
-end
-
-function QUI.setalphazeroframe(frame)
-	if frame == nil then
-		return
-	end
-	frame:SetAlpha(0)
 end
 
 function QUI.KillFrameLMRBorder(frame)
@@ -255,6 +265,9 @@ function QUI.skin_scrollframe(scollframe)
 		return
 	end
 	local tb = _G[scollframe]
+	if tb == nil then
+		return
+	end
 	QUI.KillFrameNineSlice(tb)
 --[[
 

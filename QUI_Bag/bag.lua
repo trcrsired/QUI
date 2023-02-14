@@ -20,11 +20,17 @@ local function on_leave()
 end
 
 local function set_bag_background(texture)
+	if texture == nil then
+		return
+	end
 	texture:SetVertexColor(0,0,0,0.4)
 end
 
 local function skinbag(name)
 	local bagframe = _G[name]
+	if bagframe.NineSlice then
+		bagframe.NineSlice:SetAlpha(0)
+	end
 	set_bag_background(_G[name.."BackgroundTop"])
 	set_bag_background(_G[name.."BackgroundMiddle1"])
 	set_bag_background(_G[name.."BackgroundMiddle2"])
@@ -32,8 +38,7 @@ local function skinbag(name)
 end
 
 local function skinbutton(button)
-	button:SetNormalTexture("")
-	button.icon:SetTexCoord(0.1,0.9,0.1,0.9)
+	QUI.TextureIcons(button)
 	button:SetParent(UIParent)
 	button:HookScript("OnEnter",on_enter)
 	button:HookScript("OnLeave",on_leave)
@@ -55,13 +60,7 @@ on_leave()
 for i=1,13 do
 	skinbag("ContainerFrame"..i)
 	for j=1,100 do
-		local button =  _G["ContainerFrame"..i.."Item"..j]
-		if button == nil then
-			break
-		end
-		button:SetNormalTexture("")
-		button.icon:SetTexCoord(0.1,0.9,0.1,0.9)
-		button.IconBorder:SetAlpha(0)
+		QUI.TextureIcons(_G["ContainerFrame"..i.."Item"..j])
 	end
 end
 

@@ -1,11 +1,12 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 QUI.KillFrameNineSlice(GossipFrame)
 
+if GossipGreetingScrollFrameTop then
 GossipGreetingScrollFrameTop:SetAlpha(0)
 GossipGreetingScrollFrameMiddle:SetAlpha(0)
 GossipGreetingScrollFrameBottom:SetAlpha(0)
 GossipGreetingScrollFrameScrollBar:SetAlpha(0)
-
+end
 
 local function skinbutton(button)
 	button.Left:SetAlpha(0)
@@ -15,7 +16,9 @@ local function skinbutton(button)
 	button:SetHighlightTexture("")
 end
 
+if GossipFrameGreetingGoodbyeButton then
 skinbutton(GossipFrameGreetingGoodbyeButton)
+end
 
 QUI.KillFrameNineSlice(QuestFrame)
 
