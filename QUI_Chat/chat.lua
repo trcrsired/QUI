@@ -2,24 +2,29 @@ local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local skinbutton = QUI.skin_button
 
 local _G = _G
-
+local setalphazeroframe = QUI.setalphazeroframe
 for i=1,10 do
 	local t =_G["ChatFrame"..i.."Tab"]
-	t.leftTexture:SetAlpha(0)
-	t.middleTexture:SetAlpha(0)
-	t.rightTexture:SetAlpha(0)
-	t.leftSelectedTexture:SetAlpha(0)
-	t.middleSelectedTexture:SetAlpha(0)
-	t.rightSelectedTexture:SetAlpha(0)
-	_G["ChatFrame"..i.."EditBoxLeft"]:SetAlpha(0)
-	_G["ChatFrame"..i.."EditBoxRight"]:SetAlpha(0)
-	_G["ChatFrame"..i.."EditBoxMid"]:SetAlpha(0)
-	local EditBoxLeft = _G["ChatFrame"..i.."EditBoxFocusLeft"]
-	if EditBoxLeft then
-		_G["ChatFrame"..i.."EditBoxFocusLeft"]:SetAlpha(0)
-		_G["ChatFrame"..i.."EditBoxFocusRight"]:SetAlpha(0)
-		_G["ChatFrame"..i.."EditBoxFocusMid"]:SetAlpha(0)
-	end
+	setalphazeroframe(t.left)
+	setalphazeroframe(t.middle)
+	setalphazeroframe(t.right)
+	setalphazeroframe(t.leftActive)
+	setalphazeroframe(t.middleActive)
+	setalphazeroframe(t.rightActive)
+
+	setalphazeroframe(t.leftTexture)
+	setalphazeroframe(t.middleTexture)
+	setalphazeroframe(t.rightTexture)
+	setalphazeroframe(t.leftSelectedTexture)
+	setalphazeroframe(t.middleSelectedTexture)
+	setalphazeroframe(t.rightSelectedTexture)
+
+	setalphazeroframe(_G["ChatFrame"..i.."EditBoxLeft"])
+	setalphazeroframe(_G["ChatFrame"..i.."EditBoxRight"])
+	setalphazeroframe(_G["ChatFrame"..i.."EditBoxMid"])
+	setalphazeroframe(_G["ChatFrame"..i.."EditBoxFocusLeft"])
+	setalphazeroframe(_G["ChatFrame"..i.."EditBoxFocusRight"])
+	setalphazeroframe(_G["ChatFrame"..i.."EditBoxFocusMid"])
 	_G["ChatFrame"..i.."EditBox"]:SetAltArrowKeyMode(false)
 end
 skinbutton(ChatFrameMenuButton)

@@ -250,3 +250,22 @@ function QUI.skin_scrollframe(scollframe)
 	QUI.setalphazeroframe(_G[scollframe.."Inset"])
 	QUI.setalphazeroframe(tb.inset)
 end
+
+function QUI.skin_naiveskinframe(str)
+	local frame = _G[str]
+	local header = frame.Header
+	if header == nil then
+		return
+	end
+	header.LeftBG:Hide()
+	header.CenterBG:Hide()
+	header.RightBG:Hide()
+	local header_text = header.Text
+	header_text:ClearAllPoints()
+	header_text:SetPoint("TOP",frame,"TOP",0,-15)
+	for k,v in pairs(frame.Border) do
+		if type(k)=="string" and type(v)=="table" and (k:find("Edge") or k:find("Corner")) then
+			v:SetAlpha(0)
+		end
+	end
+end

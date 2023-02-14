@@ -1,8 +1,5 @@
-CharacterFrame.NineSlice:Hide()
-CharacterFrameInset:Hide()
-CharacterFrame.Bg:SetTexture(131071)
-CharacterFrame.TitleBg:SetTexture(131071)
-CharacterFrame.TopTileStreaks:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+QUI.KillFrameNineSlice(CharacterFrame)
 
 local slots = {PaperDollItemsFrame:GetChildren()}
 local _G = _G
@@ -94,12 +91,7 @@ for k,v in pairs(TokenFramePopup.Border) do
 	end
 end
 
-local function skin_checkbox(box)
-	box:GetNormalTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
-	box:GetPushedTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
-	box:GetHighlightTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
-	box:GetCheckedTexture():SetTexCoord(0.2, 0.9, 0.1 ,0.9)
-end
+local skin_checkbox = QUI.skin_button
 
 skin_checkbox(ReputationDetailAtWarCheckBox)
 skin_checkbox(ReputationDetailInactiveCheckBox)
@@ -115,8 +107,6 @@ for k,v in pairs(CharacterModelFrame) do
 		v:Hide()
 	end
 end
-
-local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 
 function QUI:PaperDollBgDesaturate()
 	CharacterModelFrameBackgroundTopLeft:SetDesaturated(false)
