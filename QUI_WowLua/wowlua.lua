@@ -64,3 +64,15 @@ for i=1,#buttons do
 		disabled:SetTexCoord(0.1,0.9,0.15,0.9)
 	end
 end
+
+local regions = {WowLuaFrame:GetRegions()}
+for i=1,#regions do
+	local region = regions[i]
+	if region:IsObjectType("Texture") then
+		local texture = region:GetTexture()
+		if texture == 137228 or
+		texture == 137230 then
+			region:Hide()
+		end
+	end
+end

@@ -2,7 +2,8 @@
 InlineGroup Container
 Simple container widget that creates a visible "box" with an optional title.
 -------------------------------------------------------------------------------]]
-local Type, Version = "InlineGroup", 100021
+print("Hello WOrld")
+local Type, Version = "InlineGroup", 100022
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -75,7 +76,7 @@ local function Constructor()
 	titletext:SetJustifyH("LEFT")
 	titletext:SetHeight(18)
 
-	local border = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 	border:SetPoint("TOPLEFT", 0, -17)
 	border:SetPoint("BOTTOMRIGHT", -1, 3)
 	border:SetBackdrop(PaneBackdrop)

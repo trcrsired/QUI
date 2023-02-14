@@ -1,7 +1,9 @@
 SpellBookFrame.NineSlice:Hide()
 SpellBookFrameInset:Hide()
 SpellBookFrame.Bg:SetTexture(131071)
-SpellBookFrame.TitleBg:SetTexture(131071)
+if SpellBookFrame.TitleBg then
+	SpellBookFrame.TitleBg:SetTexture(131071)
+end
 SpellBookFrame.TopTileStreaks:Hide()
 SpellBookPage1:Hide()
 SpellBookPage2:Hide()
@@ -16,7 +18,13 @@ for i=1,SPELLS_PER_PAGE do
 end
 
 
+if SpellBookFrame.Tabs then
+	for _,widget in pairs(SpellBookFrame.Tabs) do
+		widget:SetAlpha(0)
+	end
+else
 SpellBookFrameTabButton1Left:SetAlpha(0)
+
 SpellBookFrameTabButton1Middle:SetAlpha(0)
 SpellBookFrameTabButton1Right:SetAlpha(0)
 SpellBookFrameTabButton1LeftDisabled:SetAlpha(0)
@@ -29,6 +37,7 @@ SpellBookFrameTabButton2Right:SetAlpha(0)
 SpellBookFrameTabButton2LeftDisabled:SetAlpha(0)
 SpellBookFrameTabButton2MiddleDisabled:SetAlpha(0)
 SpellBookFrameTabButton2RightDisabled:SetAlpha(0)
+end
 
 for i=1,8 do
 	local tab = _G["SpellBookSkillLineTab"..i]

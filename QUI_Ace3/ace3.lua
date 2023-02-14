@@ -98,8 +98,13 @@ function Ace3.RegisterAsContainer(acegui,container)
 		ctn.treeframe:SetBackdropBorderColor(0, 0, 0, 0)
 		local CreateButton = ctn.CreateButton
 		ctn.CreateButton = function(self)
-			local bt = CreateButton(self)
-			local toggle = _G[bt:GetName() .. "Toggle"]
+			local bt = CreateButton(self)			
+			local toggle 
+			if bt.Toggle then
+				toggle = bt.Toggle
+			else
+				toggle = _G[bt:GetName() .. "Toggle"]
+			end
 			toggle:GetNormalTexture():SetTexCoord(0.25,0.7,0.4,0.7)
 			toggle:GetPushedTexture():SetTexCoord(0.25,0.7,0.4,0.7)
 			toggle:GetHighlightTexture():SetTexCoord(0.25,0.7,0.4,0.7)
@@ -107,6 +112,7 @@ function Ace3.RegisterAsContainer(acegui,container)
 		end
 	elseif tpe == "TabGroup" then
 		local CreateTab = ctn.CreateTab
+		
 		ctn.CreateTab = function(self, id)
 			local tab = CreateTab(self, id)
 			local name = tab:GetName()
