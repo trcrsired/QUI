@@ -9,6 +9,7 @@ QUI_KillFrame(MinimapNorthTag)
 QUI_KillFrame(GameTimeFrame)
 QUI_KillFrame(MinimapZoomIn)
 QUI_KillFrame(MinimapZoomOut)
+QUI_KillFrame(MinimapBackdrop)
 --[[
 MinimapBorder:Hide()
 MinimapBorderTop:Hide()
