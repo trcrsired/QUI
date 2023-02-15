@@ -1,43 +1,24 @@
-PlayerTalentFrame.NineSlice:Hide()
-PlayerTalentFrame.Bg:SetTexture(131071)
-PlayerTalentFrame.TitleBg:SetTexture(131071)
-PlayerTalentFrame.TopTileStreaks:SetAlpha(0)
-PlayerTalentFrameInset:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+QUI.KillFrameNineSlice(PlayerTalentFrame)
 
 local _G = _G
-for i=1,3 do
-	_G["PlayerTalentFrameTab"..i.."Left"]:SetAlpha(0)
-	_G["PlayerTalentFrameTab"..i.."Middle"]:SetAlpha(0)
-	_G["PlayerTalentFrameTab"..i.."Right"]:SetAlpha(0)
-	_G["PlayerTalentFrameTab"..i.."LeftDisabled"]:SetAlpha(0)
-	_G["PlayerTalentFrameTab"..i.."MiddleDisabled"]:SetAlpha(0)
-	_G["PlayerTalentFrameTab"..i.."RightDisabled"]:SetAlpha(0)
-end
 
+QUI.KillFrameLMRBorder("PlayerTalentFrameTab1")
+QUI.KillFrameLMRBorder("PlayerTalentFrameTab2")
+QUI.KillFrameLMRBorder("PlayerTalentFrameTab3")
+
+if PlayerTalentFrameSpecialization then
 PlayerTalentFrameSpecialization.bg:SetAlpha(0)
 
-local regions = {PlayerTalentFrameSpecialization:GetRegions()}
-local type = type
-for i=1,#regions do
-	local region = regions[i]
-	if region:IsObjectType("Texture") then
-		region:SetAlpha(0)
-	end
-end
-
-local regions = {PlayerTalentFrameSpecialization:GetChildren()}
-for i=1,#regions do
-	local region = regions[i]
-	if region:IsObjectType("Frame") and not region:GetName()  then
-		region:SetAlpha(0)
-	end
-end
-
+QUI.KillFrameBackgroundBySearch(PlayerTalentFrameSpecialization)
 
 PlayerTalentFrameSpecializationTLCorner:SetAlpha(0)
 PlayerTalentFrameSpecializationTRCorner:SetAlpha(0)
 PlayerTalentFrameSpecializationBLCorner:SetAlpha(0)
 PlayerTalentFrameSpecializationBRCorner:SetAlpha(0)
+end
+
+if MAX_TALENT_TIERS then
 
 for i=1,MAX_TALENT_TIERS do
 	_G["PlayerTalentFrameTalentsTalentRow"..i.."Bg"]:SetAlpha(0)
@@ -51,22 +32,13 @@ for i=1,MAX_TALENT_TIERS do
 	end
 end
 
-local regions = {PlayerTalentFrameTalents:GetRegions()}
-for i=1,#regions do
-	local region = regions[i]
-	if region:IsObjectType("Texture") then
-		region:SetAlpha(0)
-	end
 end
 
-local regions = {PlayerTalentFrameTalentsPvpTalentFrame:GetRegions()}
-for i=1,#regions do
-	local region = regions[i]
-	if region:IsObjectType("Texture") and region:GetTexture()=="Interface\\Common\\bluemenu-vert" then
-		region:SetAlpha(0)
-	end
-end
-PlayerTalentFrameTalentsPvpTalentFrameTLCorner:SetAlpha(0)
-PlayerTalentFrameTalentsPvpTalentFrameTRCorner:SetAlpha(0)
-PlayerTalentFrameTalentsPvpTalentFrameBLCorner:SetAlpha(0)
-PlayerTalentFrameTalentsPvpTalentFrameBRCorner:SetAlpha(0)
+QUI.KillFrameBackgroundBySearch(PlayerTalentFrameTalents)
+QUI.KillFrameBackgroundBySearch(PlayerTalentFrameTalentsPvpTalentFrame,"Interface\\Common\\bluemenu-vert")
+
+
+QUI.setalphazeroframe(PlayerTalentFrameTalentsPvpTalentFrameTLCorner)
+QUI.setalphazeroframe(PlayerTalentFrameTalentsPvpTalentFrameTRCorner)
+QUI.setalphazeroframe(PlayerTalentFrameTalentsPvpTalentFrameBLCorner)
+QUI.setalphazeroframe(PlayerTalentFrameTalentsPvpTalentFrameBRCorner)
