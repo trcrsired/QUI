@@ -225,6 +225,28 @@ function QUI.skin_button(box)
 	if box.GetDisabledTexture then
 		QUI.skin_texture_cord(box:GetDisabledTexture())
 	end
+
+	local left = box.Left
+
+	local middle = box.Middle
+
+	local right = box.Right
+
+	if left then
+		left:SetAlpha(0)
+	end
+	if middle then
+		middle:SetAlpha(0)
+	end
+	if right then
+		right:SetAlpha(0)
+	end
+	if box.SetNormalTexture then
+		box:SetNormalTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
+	end
+	if box.SetHighlightTexture then
+		box:SetHighlightTexture([[Interface\DialogFrame\UI-DialogBox-Gold-Background]])
+	end
 end
 
 function QUI.skin_dropdown(dropdownstr)
@@ -251,12 +273,16 @@ function QUI.skin_dropdown(dropdownstr)
 		left:SetAlpha(0)
 	end
 	if middle then
-		middle:SetTexture("Interface\\Common\\Common-Input-Border")
-		middle:SetHeight(20)
-		middle:SetTexCoord(0.0625,0.9375,0.1,0.525)
+		middle:SetAlpha(0)
 	end
 	if right then
 		right:SetAlpha(0)
+	end
+	if dropdownstr.SetNormalTexture then
+		dropdownstr:SetNormalTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
+	end
+	if dropdownstr.SetHighlightTexture then
+		dropdownstr:SetHighlightTexture([[Interface\DialogFrame\UI-DialogBox-Gold-Background]])
 	end
 end
 
