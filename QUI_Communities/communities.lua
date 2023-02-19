@@ -1,5 +1,3 @@
-CommunitiesFrame.NineSlice:Hide()
-CommunitiesFrameInset:Hide()
-CommunitiesFrame.Bg:SetTexture(131071)
-CommunitiesFrame.TitleBg:SetTexture(131071)
-CommunitiesFrame.TopTileStreaks:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+
+QUI.KillFrameNineSlice(CommunitiesFrame)
