@@ -1,5 +1,2 @@
-EncounterJournal.NineSlice:Hide()
-EncounterJournalInset:Hide()
-EncounterJournal.Bg:SetTexture(131071)
-EncounterJournal.TitleBg:SetTexture(131071)
-EncounterJournal.TopTileStreaks:Hide()
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+QUI.KillFrameNineSlice(EncounterJournal)
