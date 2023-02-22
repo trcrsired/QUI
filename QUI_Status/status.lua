@@ -1,6 +1,7 @@
 tinsert(UISpecialFrames, "CalendarFrame")
 
-local is_linux_wine = Sound_GameSystem_GetOutputDriverNameByIndex(1) == "Pulseaudio (Pulseaudio)"
+local first_sound_output_driver = Sound_GameSystem_GetOutputDriverNameByIndex(1)
+local is_linux_wine = first_sound_output_driver == "Pulseaudio (Pulseaudio)" or first_sound_output_driver == "PulseAudio (PulseAudio)"
 local gxapi = GetCVar("gxApi")
 local wine_api_string = (gxapi ~= "D3D11" and gxapi ~= "D3D11_LEGACY") and "vkd3d" or "DXVK"
 local wine_max_fps = 0
@@ -181,3 +182,4 @@ local function cogameinfo()
 end
 
 coroutine.wrap(cogameinfo)()
+
