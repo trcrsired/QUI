@@ -91,8 +91,23 @@ end
 selljunkbutton:SetScript("OnClick",function()
 	if GetMerchantItemInfo(1) then
 		local GetContainerItemInfo = GetContainerItemInfo
+		if GetContainerItemInfo == nil then
+			GetContainerItemInfo = C_Container.GetContainerItemInfo
+		end
+		local bag_slots = NUM_BAG_SLOTS
+		if bag_slots == nil then
+			bag_slots = Enum.BagIndex.ReagentBag
+		end
+		local GetContainerNumSlots = GetContainerNumSlots
+		if GetContainerNumSlots == nil then
+			GetContainerNumSlots = C_Container.GetContainerNumSlots
+		end
+		local UseContainerItem = UseContainerItem
+		if UseContainerItem == nil then
+			UseContainerItem = C_Container.UseContainerItem
+		end
 		local le_item_quality_poor = Enum.ItemQuality.Poor
-		for i=0,NUM_BAG_SLOTS do
+		for i=0,bag_slots do
 			for j=1,GetContainerNumSlots(i) do
 				local texture, itemCount, locked, quality, readable, lootable, itemLink , isFiltered, noValue, itemID = GetContainerItemInfo(i,j)
 				if quality == le_item_quality_poor and not noValue then
