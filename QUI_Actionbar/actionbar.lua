@@ -9,33 +9,33 @@ do
 	KillFrame(MultiBarRight)
 	-- Hide MultiBar Buttons, but keep the bars alive
 
-	for i=1,12 do
-		if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+		for i=1,12 do
 			KillFrame(_G["ActionButton" .. i])
+			KillFrame(_G["MultiBarBottomLeftButton" .. i])
+			KillFrame(_G["MultiBarBottomRightButton" .. i])
+			KillFrame(_G["MultiBarLeftButton" .. i])
+			KillFrame(_G["MultiBarRightButton" .. i])
+			KillFrame(_G["VehicleMenuBarActionButton" .. i])
+			KillFrame(_G["OverrideActionBarButton" .. i])
+			KillFrame(_G["MultiCastActionButton" .. i])
 		end
-		KillFrame(_G["MultiBarBottomLeftButton" .. i])
-		KillFrame(_G["MultiBarBottomRightButton" .. i])
-		KillFrame(_G["MultiBarLeftButton" .. i])
-		KillFrame(_G["MultiBarRightButton" .. i])
-		KillFrame(_G["VehicleMenuBarActionButton" .. i])
-		KillFrame(_G["OverrideActionBarButton" .. i])
-		KillFrame(_G["MultiCastActionButton" .. i])
-	end
-	if MicroButtonAndBagsBar then
-		MicroButtonAndBagsBar:Show()
 	end
 
+--[[
 	if ActionBarController then
 		ActionBarController:UnregisterAllEvents()
 	end
---	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
-
+	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
+]]
 	KillFrame(MainMenuBar)
 	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+		if MicroButtonAndBagsBar then
+			MicroButtonAndBagsBar:Show()
+		end
 		KillFrame(MicroButtonAndBagsBar)
 	end
 	KillFrame(MainMenuBarArtFrame)
-	KillFrame(StatusTrackingBarManager)
 	KillFrame(StatusTrackingBarManager)
 	KillFrame(StanceBarFrame)
 	KillFrame(OverrideActionBar)
@@ -44,11 +44,48 @@ do
 	KillFrame(MultiCastActionBarFrame)
 end
 
+local sformat = string.format
+local GetBindingKey = GetBindingKey
+local tb,tb2 = {},{}
+local tconcat = table.concat
+
+local function getbindingkeyandfiltering(str)
+	local t = GetBindingKey(str)
+	if t then
+		local n = t:len()
+		if n > 1 then
+			wipe(tb)
+			for i=1,n do
+				if t:byte(i) == 45 then
+					tb[#tb+1]=i
+				end
+			end
+			if #tb ~= 0 then
+				wipe(tb2)
+				if tb[1] ~= 1 then
+					tb2[1] = t:sub(1,1)
+				end
+				for i=1,#tb-1 do
+					local v = tb[i]+1
+					tb2[#tb2+1]=t:sub(v,v)
+				end
+				tb2[#tb2+1] = t:sub(tb[#tb]+1)
+				t=tconcat(tb2)
+			end
+		end
+	end
+	return t
+end
+
 local function get_action_bar_page()
 	local page
+	local frm = MainMenuBarArtFrame
 	if MainMenuBarArtFrame then
-		page = MainMenuBarArtFrame:GetAttribute("actionpage")
+		frm = MainMenuBarArtFrame
+	else
+		frm = MainMenuBar
 	end
+	page = frm:GetAttribute("actionpage")
 	if page == nil then
 		page = GetActionBarPage()
 	end
@@ -78,6 +115,8 @@ local function create(frame,ipstart,location,width,macro)
 	texture:SetTexCoord(0.1,0.9,0.1,0.9)
 	texture:SetTexture(GetActionTexture(ipstart))
 	texture:SetAllPoints(actionbutton)
+	actionbutton:SetMouseClickEnabled(true)
+	actionbutton:RegisterForClicks("LeftButtonUp", "LeftButtonDown")
 	actionbutton:SetAttribute("type", "action")
 	actionbutton:SetAttribute("action", ipstart)
 	actionbutton[2] = texture
@@ -91,6 +130,7 @@ local function create(frame,ipstart,location,width,macro)
 	local keybind = actionbutton:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 	keybind:SetPoint("TOPRIGHT", actionbutton, "TOPRIGHT",0, 0)
 	keybind:SetFont([[FONTS\FRIZQT__.ttf]],12)
+	keybind:SetIndentedWordWrap(true)
 	actionbutton[5] = keybind
 	local cd_text = actionbutton:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 	cd_text:SetPoint("CENTER", actionbutton, "CENTER",0, 0)
@@ -262,8 +302,8 @@ local function maincofunc()
 	end
 
 	local cds = {}
-	local tag,arg1,arg2,arg3,arg4 = 2
-	local spell_activation_pool = CreateFramePool("Frame",frame,"ActionBarButtonSpellActivationAlert")
+	local tag,arg1,arg2,arg3,arg4 = 2, nil, nil, nil, nil
+	local spell_activation_pool = CreateFramePool("Frame",UIParent,"ActionBarButtonSpellActivationAlert")
 	while true do
 		repeat
 		local gtime = GetTime()
@@ -329,13 +369,12 @@ local function maincofunc()
 			end
 			break
 		elseif tag == 2 then
-			local GetBindingKey = GetBindingKey
 			for i=1,12 do
-				buttons[i][5]:SetText(GetBindingKey("ACTIONBUTTON"..i))
-				buttons[i+24][5]:SetText(GetBindingKey("MULTIACTIONBAR3BUTTON"..i))
-				buttons[i+36][5]:SetText(GetBindingKey("MULTIACTIONBAR4BUTTON"..i))
-				buttons[i+48][5]:SetText(GetBindingKey("MULTIACTIONBAR2BUTTON"..i))
-				buttons[i+60][5]:SetText(GetBindingKey("MULTIACTIONBAR1BUTTON"..i))
+				buttons[i][5]:SetText(getbindingkeyandfiltering("ACTIONBUTTON"..i))
+				buttons[i+24][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR3BUTTON"..i))
+				buttons[i+36][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR4BUTTON"..i))
+				buttons[i+48][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR2BUTTON"..i))
+				buttons[i+60][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR1BUTTON"..i))
 			end
 			tag = 1
 		end
@@ -366,10 +405,10 @@ local function maincofunc()
 		end
 		tag,arg1,arg2,arg3,arg4 = coroutine.yield()
 	end
---[[	actionbar(6,"BOTTOM",UIParent,"BOTTOM",-740,0)
+	actionbar(6,"BOTTOM",UIParent,"BOTTOM",-740,0)
 	actionbar(7,"BOTTOM",UIParent,"BOTTOM",-740,30)
 	actionbar(8,"BOTTOM",UIParent,"BOTTOM",740,0)
-	actionbar(9,"BOTTOM",UIParent,"BOTTOM",740,30)]]
+	actionbar(9,"BOTTOM",UIParent,"BOTTOM",740,30)
 end
 
 coroutine.wrap(maincofunc)()
