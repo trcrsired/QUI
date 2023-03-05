@@ -44,7 +44,7 @@ local function skineditbox(w)
 	w.Right:Hide()
 	w.Middle:SetTexCoord(0.0625,0.9375,0.15,0.525)
 end
-
+if LFGListFrame then
 skineditbox(LFGListFrame.EntryCreation.Name)
 skineditbox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 skineditbox(LFGListFrame.SearchPanel.SearchBox)
@@ -74,4 +74,5 @@ for k,v in pairs(LFGListApplicationDialog.Description) do
 	if type(k) == "string" and type(v) == "table" and k:find("Tex$") then
 		v:SetAlpha(0)
 	end
+end
 end
