@@ -21,13 +21,12 @@ do
 			KillFrame(_G["MultiCastActionButton" .. i])
 		end
 	end
-
---[[
-	if ActionBarController then
-		ActionBarController:UnregisterAllEvents()
+	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+		if ActionBarController then
+			ActionBarController:UnregisterAllEvents()
+		end
+		ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
 	end
-	ActionBarController:RegisterEvent('PLAYER_ENTERING_WORLD')
-]]
 	KillFrame(MainMenuBar)
 	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 		if MicroButtonAndBagsBar then
@@ -46,35 +45,32 @@ end
 
 local sformat = string.format
 local GetBindingKey = GetBindingKey
-local tb,tb2 = {},{}
-local tconcat = table.concat
 
 local function getbindingkeyandfiltering(str)
-	local t = GetBindingKey(str)
-	if t then
-		local n = t:len()
+	local text = GetBindingKey(str)
+	if text then
+		local n = text:len()
 		if n > 1 then
-			wipe(tb)
-			for i=1,n do
-				if t:byte(i) == 45 then
-					tb[#tb+1]=i
-				end
-			end
-			if #tb ~= 0 then
-				wipe(tb2)
-				if tb[1] ~= 1 then
-					tb2[1] = t:sub(1,1)
-				end
-				for i=1,#tb-1 do
-					local v = tb[i]+1
-					tb2[#tb2+1]=t:sub(v,v)
-				end
-				tb2[#tb2+1] = t:sub(tb[#tb]+1)
-				t=tconcat(tb2)
-			end
+			text = gsub(text, 'SHIFT%-', "S")
+			text = gsub(text, 'ALT%-', "A")
+			text = gsub(text, 'CTRL%-', "C")
+			text = gsub(text, 'BUTTON', "MwB")
+			text = gsub(text, 'MOUSEWHEELUP', "MwU")
+			text = gsub(text, 'MOUSEWHEELDOWN', "MwD")
+			text = gsub(text, 'NUMPAD', "Num")
+			text = gsub(text, 'PAGEUP', "PgUp")
+			text = gsub(text, 'PAGEDOWN', "PgDn")
+			text = gsub(text, 'SPACE', "SpB")
+			text = gsub(text, 'INSERT', "Ins")
+			text = gsub(text, 'HOME', "Hm")
+			text = gsub(text, 'DELETE', "Del")
+			text = gsub(text, 'NMULTIPLY', "*")
+			text = gsub(text, 'NMINUS', "-")
+			text = gsub(text, 'NPLUS', "+")
+			text = gsub(text, 'NEQUALS', "=")
 		end
 	end
-	return t
+	return text
 end
 
 local function get_action_bar_page()
@@ -105,20 +101,53 @@ local function action_button_onleave()
 	GameTooltip:Hide()
 end
 
-local function create(frame,ipstart,location,width,macro)
-	local actionbutton = CreateFrame("Button",nil,frame,"SecureActionButtonTemplate")
+local UnitOnTaxi = UnitOnTaxi
+local UnitControllingVehicle = UnitControllingVehicle
+
+local function leavevehicle_button_onenter(actionbutton)
+	local text
+	if UnitOnTaxi("player") then
+		text = TAXI_CANCEL_DESCRIPTION
+	elseif UnitControllingVehicle and UnitControllingVehicle("player") and CanExitVehicle() then
+		text = BINDING_NAME_VEHICLEEXIT
+	end
+	if text then
+		GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
+		GameTooltip:SetText(text)
+	end
+end
+
+local function create(frame,ipstart,location,width,macro,vehicle)
+	local templatename = "SecureActionButtonTemplate"
+	if vehicle then
+		templatename = "InsecureActionButtonTemplate"
+	end
+	local actionbutton = CreateFrame("Button",nil,frame,templatename)
 	location = location * width
 	actionbutton:SetPoint("TOPLEFT",frame,"TOPLEFT",location,0)
 	actionbutton:SetPoint("BOTTOMLEFT",frame,"BOTTOMLEFT",location,0)
 	actionbutton:SetWidth(width)
 	local texture = actionbutton:CreateTexture(nil,"OVERLAY")
 	texture:SetTexCoord(0.1,0.9,0.1,0.9)
-	texture:SetTexture(GetActionTexture(ipstart))
 	texture:SetAllPoints(actionbutton)
 	actionbutton:SetMouseClickEnabled(true)
 	actionbutton:RegisterForClicks("LeftButtonUp", "LeftButtonDown")
-	actionbutton:SetAttribute("type", "action")
-	actionbutton:SetAttribute("action", ipstart)
+	if vehicle then
+		texture:SetTexture([[Interface\Icons\Spell_Shadow_SacrificialShield]])
+		actionbutton:SetScript("OnClick",function()
+			if UnitOnTaxi("player") and TaxiRequestEarlyLanding then
+				TaxiRequestEarlyLanding()
+			elseif UnitControllingVehicle and UnitControllingVehicle("player") and CanExitVehicle() then
+				VehicleExit()
+			elseif PetDismiss then
+				PetDismiss()
+			end
+		end)
+	else
+		texture:SetTexture(GetActionTexture(ipstart))
+		actionbutton:SetAttribute("type", "action")
+		actionbutton:SetAttribute("action", ipstart)
+	end
 	actionbutton[2] = texture
 	local cd = CreateFrame("Cooldown", nil, actionbutton, "CooldownFrameTemplate")
 	cd:SetHideCountdownNumbers(true)
@@ -136,7 +165,11 @@ local function create(frame,ipstart,location,width,macro)
 	cd_text:SetPoint("CENTER", actionbutton, "CENTER",0, 0)
 	cd_text:SetFont([[FONTS\FRIZQT__.ttf]],12)
 	actionbutton[6] = cd_text
-	actionbutton:SetScript("OnEnter",action_button_onenter)
+	local onenter = action_button_onenter
+	if vehicle then
+		onenter = leavevehicle_button_onenter
+	end
+	actionbutton:SetScript("OnEnter",onenter)
 	actionbutton:SetScript("OnLeave",action_button_onleave)
 	return actionbutton
 end
@@ -255,6 +288,11 @@ local function maincofunc()
 	extrabuttonframe:SetSize(30,30)
 	local extrabutton = create(extrabuttonframe,169,0,30)
 	buttons[169] = extrabutton
+	local leavevehiclebuttonframe = CreateFrame("Frame",nil, UIParent)
+	leavevehiclebuttonframe:SetPoint("BOTTOM",UIParent,"BOTTOM",-165,60)
+	leavevehiclebuttonframe:SetSize(30,30)
+	local leavevehiclebutton = create(leavevehiclebuttonframe,0,0,30,nil,true)
+	local leavevehiclebuttontexture = leavevehiclebutton[2]
 	local current = coroutine.running()
 	local function resume(...)
 		QUI.resume(current,...)
@@ -263,7 +301,8 @@ local function maincofunc()
 		local tbls 
 		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
 			tbls = {{"ACTIONBAR_UPDATE_STATE","PLAYER_TALENT_UPDATE","ACTIONBAR_UPDATE_USABLE","SPELL_UPDATE_CHARGES","PLAYER_REGEN_ENABLED","PLAYER_REGEN_DISABLED","PLAYER_ENTER_COMBAT","PLAYER_LEAVE_COMBAT"},
-			{"UPDATE_BINDINGS","ACTIVE_TALENT_GROUP_CHANGED","UPDATE_SHAPESHIFT_FORMS","ACTIONBAR_PAGE_CHANGED","UPDATE_SHAPESHIFT_COOLDOWN","UPDATE_BONUS_ACTIONBAR","UPDATE_VEHICLE_ACTIONBAR","UPDATE_OVERRIDE_ACTIONBAR","UPDATE_SHAPESHIFT_FORM","UPDATE_EXTRA_ACTIONBAR","UPDATE_SHAPESHIFT_FORMS","UPDATE_SHAPESHIFT_USABLE"},
+			{"UPDATE_BINDINGS","ACTIVE_TALENT_GROUP_CHANGED","UPDATE_SHAPESHIFT_FORMS","ACTIONBAR_PAGE_CHANGED","UPDATE_SHAPESHIFT_COOLDOWN","UPDATE_BONUS_ACTIONBAR","UPDATE_VEHICLE_ACTIONBAR","UPDATE_OVERRIDE_ACTIONBAR","UPDATE_SHAPESHIFT_FORM","UPDATE_EXTRA_ACTIONBAR","UPDATE_SHAPESHIFT_FORMS","UPDATE_SHAPESHIFT_USABLE","UNIT_ENTERED_VEHICLE",
+			"UNIT_ENTERING_VEHICLE","UNIT_EXITED_VEHICLE","UNIT_EXITING_VEHICLE","VEHICLE_UPDATE"},
 			{"SPELL_ACTIVATION_OVERLAY_GLOW_SHOW","SPELL_ACTIVATION_OVERLAY_GLOW_HIDE"},{"LOADING_SCREEN_DISABLED","UPDATE_MOUSEOVER_UNIT"},{"PLAYER_TARGET_CHANGED","PLAYER_FOCUS_CHANGED"}}
 		else
 			tbls = {{"ACTIONBAR_UPDATE_STATE","ACTIONBAR_UPDATE_COOLDOWN","ACTIONBAR_UPDATE_USABLE","PLAYER_REGEN_ENABLED","PLAYER_REGEN_DISABLED","PLAYER_ENTER_COMBAT","PLAYER_LEAVE_COMBAT"},{"UPDATE_BINDINGS","UPDATE_BONUS_ACTIONBAR","UPDATE_SHAPESHIFT_FORM","UPDATE_SHAPESHIFT_FORMS","UPDATE_SHAPESHIFT_USABLE"},
@@ -375,6 +414,11 @@ local function maincofunc()
 				buttons[i+36][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR4BUTTON"..i))
 				buttons[i+48][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR2BUTTON"..i))
 				buttons[i+60][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR1BUTTON"..i))
+			end
+			if UnitOnTaxi("player") or (UnitControllingVehicle("player") and CanExitVehicle()) then
+				leavevehiclebuttontexture:Show()
+			else
+				leavevehiclebuttontexture:Hide()
 			end
 			tag = 1
 		end
