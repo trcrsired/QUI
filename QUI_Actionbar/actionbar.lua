@@ -415,7 +415,7 @@ local function maincofunc()
 				buttons[i+48][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR2BUTTON"..i))
 				buttons[i+60][5]:SetText(getbindingkeyandfiltering("MULTIACTIONBAR1BUTTON"..i))
 			end
-			if UnitOnTaxi("player") or (UnitControllingVehicle("player") and CanExitVehicle()) then
+			if UnitOnTaxi("player") or (UnitControllingVehicle and UnitControllingVehicle("player") and CanExitVehicle()) then
 				leavevehiclebuttontexture:Show()
 			else
 				leavevehiclebuttontexture:Hide()
