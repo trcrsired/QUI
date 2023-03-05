@@ -120,15 +120,26 @@ function QUI.KillFrameNineSlice(frame)
 	end
 end
 
-function QUI.KillFrameBackgroundBySearch(frame,texture)
+function QUI.KillFrameBackgroundBySearch(frame,texture,besides)
 	if frame == nil then
 		return
 	end
 	local regions = {frame:GetRegions()}
 	for i=1,#regions do
 		local region = regions[i]
-		if region:IsObjectType("Texture") and (texture == nil or region:GetTexture()==texture) then
-			region:SetAlpha(0)
+		if region:IsObjectType("Texture") then
+			local regiontexture = region:GetTexture()
+			local killit
+			if besides then
+				if regiontexture~=texture then
+					killit = true
+				end
+			elseif region == nil or regiontexture==texture then
+				killit = true
+			end
+			if killit then
+				region:SetAlpha(0)
+			end
 		end
 	end	
 end
@@ -344,6 +355,17 @@ function QUI.skin_buttons_in_frame(frame)
 			slot:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
 			slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
 			QUI.TextureIcons(slot)
+		end
+	end
+end
+
+
+function QUI.killframecorneredge(frame)
+	if frame then
+		for k,v in pairs(frame) do
+			if type(k) == "string" and (k:find("Corner") or k:find("Edge")) and type(v)=="table" then
+				v:SetAlpha(0)
+			end
 		end
 	end
 end

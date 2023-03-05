@@ -8,14 +8,25 @@ local function SetOriginalBackdrop(widget)
 	QUI[1][widget]:SetTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
 end
 
+local function skininvitedialogbutton(button)
+	button.Left:SetAlpha(0)
+	button.Middle:SetVertexColor(0,0,0,1)
+	button.Right:SetAlpha(0)
+	button:SetHighlightTexture("")
+end
+
 local function skinbutton(button)
+	if button == nil then
+		return
+	end
 	local backdrops = QUI[1]
 	if backdrops[button] then return end
 	if button.SetNormalTexture then button:SetNormalTexture("") end
 	if button.SetHighlightTexture then button:SetHighlightTexture("") end
 	if button.SetPushedTexture then button:SetPushedTexture("") end
 	if button.SetDisabledTexture then button:SetDisabledTexture("") end
-	local backdrop = button:CreateTexture(nil, "BACKDROP")
+	QUI.KillFrameBackgroundBySearch(button,1416467,true)
+	local backdrop = button:CreateTexture(nil, "BACKGROUND")
 	backdrop:SetAllPoints()
 	backdrops[button] = backdrop
 	SetOriginalBackdrop(button)
@@ -47,18 +58,8 @@ end
 
 Description.MiddleTex:Show()
 
-for k,v in pairs(LFGListInviteDialog.Border) do
-	if type(k) == "string" and (k:find("Corner") or k:find("Edge")) and type(v)=="table" then
-		v:SetAlpha(0)
-	end
-end
+QUI.killframecorneredge(LFGListInviteDialog.Border)
 
-local function skininvitedialogbutton(button)
-	button.Left:SetAlpha(0)
-	button.Middle:SetVertexColor(0,0,0,1)
-	button.Right:SetAlpha(0)
-	button:SetHighlightTexture("")
-end
 
 skininvitedialogbutton(LFGListInviteDialog.AcceptButton)
 skininvitedialogbutton(LFGListInviteDialog.DeclineButton)
@@ -67,12 +68,7 @@ skininvitedialogbutton(LFGListInviteDialog.AcknowledgeButton)
 skininvitedialogbutton(LFGListApplicationDialog.SignUpButton)
 skininvitedialogbutton(LFGListApplicationDialog.CancelButton)
 
-
-for k,v in pairs(LFGListApplicationDialog.Border) do
-	if type(k) == "string" and (k:find("Corner") or k:find("Edge")) and type(v)=="table" then
-		v:SetAlpha(0)
-	end
-end
+QUI.killframecorneredge(LFGListApplicationDialog.Border)
 
 for k,v in pairs(LFGListApplicationDialog.Description) do
 	if type(k) == "string" and type(v) == "table" and k:find("Tex$") then
