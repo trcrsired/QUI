@@ -382,27 +382,29 @@ local function maincofunc()
 				end
 				if isthisspell then
 					local button = buttons[j]
-					local overlay = button.overlay
-					if arg1 == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
-						if overlay == nil then
-							overlay = spell_activation_pool:Acquire()
-							button.cooldown = button[3]
-							button.overlay = overlay
-							overlay:SetParent(button);
-							overlay:ClearAllPoints();
-							local frameWidth, frameHeight = button:GetSize();
-							overlay:SetSize(frameWidth * 1.4, frameHeight * 1.4);
-							overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -frameWidth * 0.2, frameHeight * 0.2);
-							overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", frameWidth * 0.2, -frameHeight * 0.2);
+					if button then
+						local overlay = button.overlay
+						if arg1 == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
+							if overlay == nil then
+								overlay = spell_activation_pool:Acquire()
+								button.cooldown = button[3]
+								button.overlay = overlay
+								overlay:SetParent(button);
+								overlay:ClearAllPoints();
+								local frameWidth, frameHeight = button:GetSize();
+								overlay:SetSize(frameWidth * 1.4, frameHeight * 1.4);
+								overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -frameWidth * 0.2, frameHeight * 0.2);
+								overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", frameWidth * 0.2, -frameHeight * 0.2);
+							end
+							if overlay.animOut:IsPlaying() then
+								overlay.animOut:Stop();
+							end
+							overlay.animIn:Play();
+						elseif overlay then
+							spell_activation_pool:Release(overlay)
+							button.cooldown = nil
+							button.overlay = nil
 						end
-						if overlay.animOut:IsPlaying() then
-							overlay.animOut:Stop();
-						end
-						overlay.animIn:Play();
-					elseif overlay then
-						spell_activation_pool:Release(overlay)
-						button.cooldown = nil
-						button.overlay = nil
 					end
 				end
 			end
