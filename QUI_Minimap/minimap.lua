@@ -2,6 +2,7 @@ local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local minimap = QUI:NewModule("Minimap","AceEvent-3.0")
 Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 local QUI_KillFrame = QUI.KillFrame
+
 QUI_KillFrame(MinimapBorder)
 QUI_KillFrame(MinimapBorderTop)
 QUI_KillFrame(MiniMapWorldMapButton)
@@ -10,6 +11,7 @@ QUI_KillFrame(GameTimeFrame)
 QUI_KillFrame(MinimapZoomIn)
 QUI_KillFrame(MinimapZoomOut)
 QUI_KillFrame(MinimapBackdrop)
+
 --[[
 MinimapBorder:Hide()
 MinimapBorderTop:Hide()
@@ -24,6 +26,7 @@ MinimapZoomOut:SetAlpha(0)
 MinimapZoomOut:SetScale(0.0001)
 MinimapZoomOut:SetParent(QUI.UIHider)
 ]]
+
 Minimap:EnableMouseWheel(true)
 Minimap:SetScript("OnMouseWheel",function(self,val,...)
 	local zoom = Minimap:GetZoom() + val
@@ -39,7 +42,9 @@ end
 function GetMinimapShape() return 'SQUARE' end
 
 function minimap:OnEnable()
-	TimeManagerClockButton:SetParent(QUI.UIHider)
+	if TimeManagerClockButton then
+		TimeManagerClockButton:SetParent(QUI.UIHider)
+	end
 	self.OnEnable = nil
 end
 
@@ -58,3 +63,14 @@ C_Timer.NewTicker(1,function()
 		SetText(coordinates,"")
 	end
 end)
+
+if ExpansionLandingPageMinimapButton then
+local expansionlandingpageminimapbuttonframe = CreateFrame("Frame",nil,Minimap)
+expansionlandingpageminimapbuttonframe:SetSize(25,25)
+ExpansionLandingPageMinimapButton:SetParent(expansionlandingpageminimapbuttonframe)
+ExpansionLandingPageMinimapButton:ClearAllPoints()
+ExpansionLandingPageMinimapButton:SetAllPoints(expansionlandingpageminimapbuttonframe)
+expansionlandingpageminimapbuttonframe:SetPoint("TOP",Minimap,"BOTTOMRIGHT",0,-30)
+expansionlandingpageminimapbuttonframe:Show()
+minimap.expansionlandingpageminimapbuttonframe = expansionlandingpageminimapbuttonframe
+end
