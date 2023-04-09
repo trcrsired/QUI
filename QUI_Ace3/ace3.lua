@@ -2,6 +2,12 @@ local AceGUI = LibStub("AceGUI-3.0",true)
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local Ace3 = QUI:NewModule("Ace3","AceEvent-3.0")
 
+local function AddBackdrop(obj)
+	if obj and not obj.SetBackdrop then
+		Mixin(obj, BackdropTemplateMixin)
+	end
+end
+
 function Ace3:OnEnable()
 	self:RegisterEvent("ADDON_LOADED")
 	self:ADDON_LOADED()
@@ -78,6 +84,7 @@ function Ace3.RegisterAsWidget(acegui,widget)
 		wdg.editbox.Right:Hide()
 		wdg.editbox.Middle:SetTexCoord(0.0625,0.9375,0.15,0.525)
 	elseif tpe  == "MultiLineEditBox" then
+		AddBackdrop(wdg.scrollBG)
 		wdg.scrollBG:SetBackdropBorderColor(0,0,0,0)
 		local button = wdg.button
 		button.Left:SetVertexColor(0,0,0,0.8)
@@ -91,10 +98,12 @@ function Ace3.RegisterAsContainer(acegui,container)
 	local ctn = Ace3.original_register_as_container(acegui,container)
 	local tpe = ctn.type
 	local border = ctn.border
+	AddBackdrop(border)
 	if border then
 		border:SetBackdropBorderColor(0, 0, 0, 0)
 	end
 	if tpe == "TreeGroup" then
+		AddBackdrop(ctn.treeframe)
 		ctn.treeframe:SetBackdropBorderColor(0, 0, 0, 0)
 		local CreateButton = ctn.CreateButton
 		ctn.CreateButton = function(self)
@@ -144,6 +153,7 @@ function Ace3:ADDON_LOADED()
 	if not AceConfigDialog then return end
 	local popup = AceConfigDialog.popup
 	if popup and not popup.qui_skinned then
+		AddBackdrop(popup)
 		if popup.SetBackdropBorderColor then
 			popup:SetBackdropBorderColor(0,0,0,0)
 		else
