@@ -1,394 +1,366 @@
-local QUI = LibStub("AceAddon-3.0"):NewAddon("QUI","AceEvent-3.0","AceConsole-3.0","AceHook-3.0")
+local LookingForGroup = LibStub("AceAddon-3.0"):NewAddon("LookingForGroup","AceEvent-3.0","AceConsole-3.0")
 
-QUI.UIHider = CreateFrame("Frame")
-QUI.UIHider:Hide()
-QUI[1] = {}
-
-function QUI:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("QUIDB",{profile = {}},true)
-	local LibDualSpec = LibStub('LibDualSpec-1.0',true)
-	if LibDualSpec then
-		LibDualSpec:EnhanceDatabase(self.db, "QUI")
+function LookingForGroup:OnInitialize()
+	self.db = LibStub("AceDB-3.0"):New("LookingForGroupDB",{profile = ((GetCurrentRegion()==5 and {spam_filter_maxlength=120,spam_filter_digits=2,spam_filter_hyperlinks=2}) or {spam_filter_maxlength=80,hardware = true})},true)
+	self:RegisterChatCommand("LookingForGroup", "ChatCommand")
+	self:RegisterChatCommand("LFG", "ChatCommand")
+	self:RegisterChatCommand(LFG_TITLE:gsub(" ",""), "ChatCommand")
+	if LFGListFrame then
+		LookingForGroup.lfgsystemactivate = true
 	end
-	self:RegisterChatCommand("QUI", "ChatCommand")
-
-	self:RegisterEvent("ADDON_LOADED")
-	local lods = {}
+	local disable_pve_frame
 	local GetAddOnMetadata = GetAddOnMetadata
-	for i=1,GetNumAddOns() do
-		local conflict = GetAddOnMetadata(i,"X-QUI-CONFLICT")
-		if conflict and not IsAddOnLoaded(conflict) then
-			LoadAddOn(i)
-		end
-		local meta = GetAddOnMetadata(i,"X-QUI-LOD")
-		if meta then
-			local addon, title, notes, enabled, loadable, reason, security = GetAddOnInfo(i)
-			if loadable == "DEMAND_LOADED" then
-				lods[meta] = i
+	local GetAddOnInfo = GetAddOnInfo
+	for i = 1, GetNumAddOns() do
+		if GetAddOnMetadata(i, "X-LFG-DISABLE-PVEFRAME") then
+			local name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo(i)
+			if loadable or reason == "DEMAND_LOADED" then
+				disable_pve_frame = true
+				break
 			end
 		end
 	end
-	if next(lods) then
-		QUI.lods = lods
-		QUI:RegisterEvent("ADDON_LOADED")
+	local portal = GetCVar("portal")
+	local isprivateserver
+	if portal == "127.0.0.1" then
+		isprivateserver = true
+	end
+	local region = GetCurrentRegion()
+	if isprivateserver then
+		region = GetRealmName()
+		LookingForGroup.privateservername = region
+	end
+	for i = 1, GetNumAddOns() do
+		local metadata = GetAddOnMetadata(i, "X-LFG-REGION")
+		if metadata and (metadata == "0" or region == tonumber(metadata)) then
+			LoadAddOn(i)
+		end
+	end
+	local event_zero
+	for j=1,2 do
+		local xevent,xmessage
+		if j==1 then
+			xevent = "X-LFG-EVENT"
+			xmessage = "X-LFG-MESSAGE"
+		elseif disable_pve_frame then
+			xevent = "X-LFG-DISABLE-PVEFRAME-EVENT"
+			xmessage = "X-LFG-DISABLE-PVEFRAME-MESSAGE"
+		else
+			xevent = "X-LFG-PVEFRAME-EVENT"
+			xmessage = "X-LFG-PVEFRAME-MESSAGE"
+		end
+		for i = 1, GetNumAddOns() do
+			local events = GetAddOnMetadata(i, xevent)
+			if events then
+				if events == "0" then
+					event_zero = true
+				else
+					for event in gmatch(events, "([^,]+)") do
+						self:RegisterEvent(event,"loadevent",i)
+					end
+				end
+			end
+			local messages = GetAddOnMetadata(i,xmessage)
+			if messages then
+				for message in gmatch(messages, "([^,]+)") do
+					self:RegisterMessage(message,"loadevent",i)
+				end
+			end
+		end
+	end
+	if event_zero then
+		self:LOADING_SCREEN_DISABLED()
 	else
-		QUI.ADDON_LOADED = nil
+		LookingForGroup.LOADING_SCREEN_DISABLED = nil
 	end
-	QUI.OnInitialize = nil
-end
-
-function QUI:ChatCommand(input)
-end
-
-function QUI:ADDON_LOADED(event,addon,...)
-	local lods = QUI.lods
-	local index = QUI.lods[addon]
-	if not index then return end
-	LoadAddOn(index)
-	lods[addon] = nil
-	if next(lods) == nil then
-		QUI:UnregisterEvent("ADDON_LOADED")
-		QUI.ADDON_LOADED = nil
+	if disable_pve_frame then
+		LookingForGroup.disable_pve_frame = nop
+		LookingForGroup.enable_pve_frame = nop
 	end
+	self.OnInitialize = nil
 end
 
-function QUI.resume(current,...)
+function LookingForGroup:ChatCommand(input)
+	self:SendMessage("LFG_ChatCommand",input)
+end
+
+function LookingForGroup:OnEnable()
+	self.load_time = GetTime()
+	self.OnInitialize = nil
+	self.OnEnable = nil
+end
+
+function LookingForGroup.resume(current,...)
 	local current_status = coroutine.status(current)
 	if current_status =="suspended" then
 		local status, msg = coroutine.resume(current,...)
 		if not status then
-			QUI:Print(msg)
+			LookingForGroup:Print(msg)
 		end
 		return status,msg
 	end
 	return current_status
 end
 
-function QUI.KillFrame(frame)
-	if frame == nil then
-		return
+function LookingForGroup.Search(category,filters,preferredfilters,crossfactionlisting)
+	LookingForGroup:SendMessage("LFG_CORE_FINALIZER",0)
+	C_LFGList.Search(category,filters,preferredfilters,C_LFGList.GetLanguageSearchFilter(),crossfactionlisting)
+	local current = coroutine.running()
+	local function resume(...)
+		LookingForGroup.resume(current,...)
 	end
-	local hasevent = frame.UnregisterAllEvents
-	if hasevent then
-		frame:UnregisterAllEvents()
+	LookingForGroup:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED",resume)
+	LookingForGroup:RegisterEvent("LFG_LIST_SEARCH_FAILED",resume)
+	local r = coroutine.yield()
+	LookingForGroup:UnregisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
+	LookingForGroup:UnregisterEvent("LFG_LIST_SEARCH_FAILED")
+	if r == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
+		return C_LFGList.GetSearchResults()
 	end
-	frame:SetAlpha(0)
-	frame:SetScale(0.00001)
-	frame:SetParent(QUI.UIHider)
-	local hasmouse = frame.EnableMouse
-	if hasmouse then
-		frame:EnableMouse(false)
+	return 0
+end
+
+function LookingForGroup:loadevent(p,event,...)
+	LookingForGroup:UnregisterEvent(event)
+	LookingForGroup:UnregisterMessage(event)
+	if IsAddOnLoaded(p) then
+		self:SendMessage(event,...)
+		return true
 	end
-	local hassetattribute = frame.SetAttribute
-	if hassetattribute then
-		frame:SetAttribute("statehidden", true)
+	LoadAddOn(p)
+	if IsAddOnLoaded(p) then
+		local addon = GetAddOnMetadata(p,"X-LFG-EM-HOSTER") or GetAddOnInfo(p)
+		local a = LibStub("AceAddon-3.0"):GetAddon(addon)
+		a[event](a,event,...)
+		collectgarbage("collect")
+		return true
 	end
 end
 
-function QUI.setalphazeroframe(frame)
-	if frame == nil then
-		return
-	end
-	if frame.SetAlpha == nil then
-		return
-	end
-	frame:SetAlpha(0)
-end
-
-function QUI.KillFrameNineSlice(frame)
-	if frame == nil then
-		return
-	end
-	local setalphazeroframe = QUI.setalphazeroframe
-	setalphazeroframe(frame.NineSlice)
-	setalphazeroframe(frame.topLeftCorner)
-	setalphazeroframe(frame.topRightCorner)
-	setalphazeroframe(frame.bottomLeftCorner)
-	setalphazeroframe(frame.bottomRightCorner)
-	setalphazeroframe(frame.topEdge)
-	setalphazeroframe(frame.bottomEdge)
-	setalphazeroframe(frame.leftEdge)
-	setalphazeroframe(frame.rightEdge)
-	setalphazeroframe(frame.center)
-
-	setalphazeroframe(frame.TopTileStreaks)
-	if frame.Bg then
-		frame.Bg:SetTexture(131071)
-	end
-	if frame.TitleBg then
-		frame.TitleBg:SetTexture(131071)
-	end
-end
-
-function QUI.KillFrameBackgroundBySearch(frame,texture,besides)
-	if frame == nil then
-		return
-	end
-	local regions = {frame:GetRegions()}
-	for i=1,#regions do
-		local region = regions[i]
-		if region:IsObjectType("Texture") then
-			local regiontexture = region:GetTexture()
-			local killit
-			if besides then
-				if regiontexture~=texture then
-					killit = true
-				end
-			elseif region == nil or regiontexture==texture then
-				killit = true
-			end
-			if killit then
-				region:SetAlpha(0)
+function LookingForGroup:LOADING_SCREEN_DISABLED()
+	local name,v = GetInstanceInfo()
+	if v == "none" or v == "scenario" then
+		for i = 1, GetNumAddOns() do
+			if GetAddOnMetadata(i, "X-LFG-EVENT") == "0" then
+				LoadAddOn(i)
 			end
 		end
-	end	
+		self:UnregisterEvent("LOADING_SCREEN_DISABLED")
+		LookingForGroup.LOADING_SCREEN_DISABLED = nil
+	else
+		self:RegisterEvent("LOADING_SCREEN_DISABLED")
+	end
 end
 
-function QUI.KillFrameBorderBySearch(frame)
-	if frame == nil then
+function LookingForGroup.accepted(...)
+	LookingForGroup.accepted = nil
+	local loaded, reason = LoadAddOn("LookingForGroup_Auto")
+	if not loaded then return true end
+	return LookingForGroup.accepted(...)
+end
+
+function LookingForGroup.realm_filter(name)
+	if not name then return true end
+	local profile = LookingForGroup.db.profile
+	local mode_rf = profile.mode_rf
+	local flags_disable = profile.flags_disable
+	if mode_rf == nil and flags_disable then
 		return
 	end
-	for k,v in pairs(frame) do
-		if type(k)=="string" and type(v)=="table" and (k:find("Edge") or k:find("Corner")) then
-			v:SetAlpha(0)
+	local _,realm = strsplit("-",name)
+	if realm == nil then return end
+	if mode_rf ~= nil then
+		local t
+		local realm_filters = profile.realm_filters
+		if realm_filters and realm_filters[realm] then
+			t = true
+		end
+		if mode_rf == false then
+			t = not t
+		end
+		if t then
+			return true
 		end
 	end
-end
-
-function QUI.KillFrameLMRBorder(frame)
-	if frame == nil then
-		return
-	end
-	local tp = type(frame) == "string"
-	local setalphazeroframe = QUI.setalphazeroframe
-	if tp then
-		setalphazeroframe(_G[frame.."Left"])
-		setalphazeroframe(_G[frame.."LeftDisabled"])
-		setalphazeroframe(_G[frame.."Middle"])
-		setalphazeroframe(_G[frame.."MiddleDisabled"])
-		setalphazeroframe(_G[frame.."Right"])
-		setalphazeroframe(_G[frame.."RightDisabled"])
-	else
-		setalphazeroframe(frame.Left)
-		setalphazeroframe(frame.LeftDisabled)
-		setalphazeroframe(frame.Middle)
-		setalphazeroframe(frame.MiddleDisabled)
-		setalphazeroframe(frame.Right)
-		setalphazeroframe(frame.RightDisabled)
-	end
-end
-
-function QUI.KillFrameBorderInset(frame)
-	if frame == nil then
-		return
-	end
-	local tp = type(frame) == "string"
-	local setalphazeroframe = QUI.setalphazeroframe
-	if tp then
-		setalphazeroframe(_G[frame.."Border"])
-		setalphazeroframe(_G[frame.."Inset"])
-	else
-		setalphazeroframe(frame.Border)
-		setalphazeroframe(frame.Inset)
-	end
-end
-
-function QUI.TextureIcons(frame)
-	if frame == nil then
-		return
-	end
-	local icon = frame.icon
-	if icon then
-		icon:SetTexCoord(0.1,0.9,0.1,0.9)
-	end
-	local iconborder = frame.IconBorder
-	if iconborder then
-		frame.IconBorder:SetAlpha(0)
-	end
-	if frame.SetNormalTexture then
-		frame:SetNormalTexture("")
-	end
-end
-
-function QUI.skin_texture_cord(texture)
-	if texture == nil then
-		return
-	end
-	local SetTexCoord = texture.SetTexCoord
-	if texture.SetTexCoord then
-		texture:SetTexCoord(0.22, 0.7, 0.28, 0.7)
-	end
-end
-
-function QUI.skin_button(box)
-	if box == nil then
-		return
-	end
-	if box.GetNormalTexture then
-		QUI.skin_texture_cord(box:GetNormalTexture())
-	end
-	if box.GetPushedTexture then
-		QUI.skin_texture_cord(box:GetPushedTexture())
-	end
-	if box.GetHighlightTexture then
-		QUI.skin_texture_cord(box:GetHighlightTexture())
-	end
-	if box.GetDisabledTexture then
-		QUI.skin_texture_cord(box:GetDisabledTexture())
-	end
-
-	local left = box.Left
-
-	local middle = box.Middle
-
-	local right = box.Right
-
-	if left then
-		left:SetAlpha(0)
-	end
-	if middle then
-		middle:SetAlpha(0)
-	end
-	if right then
-		right:SetAlpha(0)
-	end
-	if box.SetNormalTexture then
-		box:SetNormalTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
-	end
-	if box.SetHighlightTexture then
-		box:SetHighlightTexture([[Interface\DialogFrame\UI-DialogBox-Gold-Background]])
-	end
-end
-
-function QUI.skin_dropdown(dropdownstr)
-	if dropdownstr == nil then
-		return
-	end
-	local tb = _G[dropdownstr]
-	local left = _G[dropdownstr.."Left"]
-	if left == nil then
-		left = tb.left
-	end
-
-	local middle = _G[dropdownstr.."Middle"]
-	if middle == nil then
-		middle = tb.middle
-	end
-
-	local right = _G[dropdownstr.."Right"]
-	if right == nil then
-		right = tb.right
-	end
-
-	if left then
-		left:SetAlpha(0)
-	end
-	if middle then
-		middle:SetAlpha(0)
-	end
-	if right then
-		right:SetAlpha(0)
-	end
-	if dropdownstr.SetNormalTexture then
-		dropdownstr:SetNormalTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
-	end
-	if dropdownstr.SetHighlightTexture then
-		dropdownstr:SetHighlightTexture([[Interface\DialogFrame\UI-DialogBox-Gold-Background]])
-	end
-end
-
-function QUI.skin_scrollframe(scollframe)
-	if scollframe == nil then
-		return
-	end
-	local tb=scollframe
-	local scollframetype = type(scollframe)
-	local scollframeisstring = scollframetype == "string"
-	if scollframeisstring then
-		tb = _G[scollframe]
-		if tb == nil then
+	local flags_tb = profile.flags
+	local flags = LookingForGroup.flags
+	if not flags_disable and flags_tb and flags then
+		local f3 = flags[3][realm]
+		local f
+		if f3 == nil then
+			f = flags_tb[0]
+		else
+			f = flags_tb[f3]
+		end
+		if f then
+			return true
+		elseif f == false then
 			return
 		end
-	end
-	QUI.KillFrameNineSlice(tb)
---[[
-
-	QUI.setalphazeroframe(_G[scollframe.."ScrollFrame"])
-	QUI.setalphazeroframe(tb.ScrollBox)
-]]
-	if tb.ScrollBar then
-		tb.ScrollBar:SetAlpha(0)
-	end
-	if scollframeisstring then
-		QUI.setalphazeroframe(_G[scollframe.."Inset"])
-	end
-	QUI.setalphazeroframe(tb.inset)
-end
-
-function QUI.skin_naiveskinframe(str)
-	local frame = _G[str]
-	local header = frame.Header
-	if header == nil then
-		return
-	end
-	header.LeftBG:Hide()
-	header.CenterBG:Hide()
-	header.RightBG:Hide()
-	local header_text = header.Text
-	header_text:ClearAllPoints()
-	header_text:SetPoint("TOP",frame,"TOP",0,-15)
-	for k,v in pairs(frame.Border) do
-		if type(k)=="string" and type(v)=="table" and (k:find("Edge") or k:find("Corner")) then
-			v:SetAlpha(0)
+		local has_white = profile.flags_has_white
+		if has_white then
+			return true
 		end
 	end
 end
 
-
-function QUI.skin_buttons_in_frame(frame)
-	if frame == nil then
-		return
-	end
-	if frame.GetChildren == nil then
-		return
-	end
-	local slots = {frame:GetChildren()}
-	local _G = _G
-	for i=1,#slots do
-		local slot=slots[i]
-		if slot:IsObjectType("Button") or slot:IsObjectType("ItemButton") then
-			QUI.setalphazeroframe(_G[slot:GetName().."Frame"])
-			slot:SetNormalTexture("")
-			slot:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-			slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-			QUI.TextureIcons(slot)
+function LookingForGroup.create_popup()
+	LookingForGroup.create_popup = nil
+	local popup = CreateFrame("Frame","LFGPopupFrame",UIParent)
+	popup:Hide()
+	tinsert(UISpecialFrames, popup:GetName())
+	LookingForGroup.popup = popup
+	popup:SetScript("OnHide",function(self)
+		if self.attached_frame then
+			self.attached_frame:Hide()
+			self.attached_frame = nil
 		end
-	end
+		self.buttons_pool:ReleaseAll()
+		self.func_tb = nil
+	end)
+	local bgtexture = popup:CreateTexture(nil,"BACKGROUND")
+	bgtexture:SetTexture(131071)
+	bgtexture:SetAllPoints(popup)
+	popup.bgtexture = bgtexture
+	popup:SetPoint("TOP", UIParent, "TOP", 0, -135)
+	popup:SetFrameStrata("TOOLTIP")
+	local text = popup:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+	text:SetPoint("TOP", 0, -16)
+	popup.text = text
+	popup.buttons_pool = CreateFramePool("Button",popup)
 end
 
+function LookingForGroup.show_popup(text,tb,attached_frame)
+	if LookingForGroup.create_popup then
+		LookingForGroup.create_popup()
+	end
+	local popup = LookingForGroup.popup
+	popup.text:SetText(text)
+	if popup.attached_frame then
+		popup.attached_frame:Hide()
+		popup.attached_frame = nil
+	end
+	local height = 58 + popup.text:GetHeight()
+	if attached_frame then
+		popup.attached_frame = attached_frame
+		attached_frame:SetParent(popup)
+		attached_frame:ClearAllPoints()
+		attached_frame:SetPoint("TOP",popup.text,"BOTTOM",0,-5)
+		height = height + attached_frame:GetHeight() + 5
+		attached_frame:Show()
+	end
+	popup.func_tb = tb
+	local buttons_pool = popup.buttons_pool
+	buttons_pool:ReleaseAll()
+	local numtb = floor(#tb / 2) + 1
+	local width = max(max(30+popup.text:GetWidth(),320),200*numtb)
+	popup:SetSize(width,max(70,height))
+	local buttonpoint = width/(numtb+1)
+	for i=1,#tb,2 do
+		local button = buttons_pool:Acquire()
+		button:SetSize(130, 21)
+		button:SetNormalFontObject(GameFontNormal)
+		button:SetHighlightFontObject(GameFontHighlight)
+		button:SetNormalTexture(130763) -- "Interface\\Buttons\\UI-DialogBox-Button-Up"
+		button:GetNormalTexture():SetTexCoord(0.1, 0.9, 0.2, 0.51875)
+		button:GetNormalTexture():SetVertexColor(0,0,0,0.8)
+		local script = tb[i]
+		button:SetScript("OnClick",function()
+			popup.func_tb = nil
+			popup:Hide()
+			script()
+		end)
+		if i == 1 then
+			button:SetText(tb[0] or CANCEL)
+			button:SetPoint("BOTTOM",popup,"BOTTOMRIGHT",-buttonpoint,8)
+		else
+			button:SetText(tb[i-1])
+			button:SetPoint("BOTTOM",popup,"BOTTOMLEFT",((i-1)/2)*buttonpoint,8)
+		end
+		button:Show()
+	end
+	popup:Show()
+end
 
-function QUI.killframecorneredge(frame)
-	if frame then
-		for k,v in pairs(frame) do
-			if type(k) == "string" and (k:find("Corner") or k:find("Edge")) and type(v)=="table" then
-				v:SetAlpha(0)
+function LookingForGroup.disable_pve_frame(nochangehookstatus)
+	LFGListFrame:UnregisterAllEvents()
+	LFGListFrame:Hide()
+	GroupFinderFrame.groupButton3:Hide()
+	local LFGListPVPStub = LFGListPVPStub
+	if LFGListPVPStub then
+		LFGListPVPStub:Hide()
+	end
+	local PVPQueueFrame = PVPQueueFrame
+	if PVPQueueFrame then
+		PVPQueueFrame.CategoryButton3:Hide()
+	end
+	if not nochangehookstatus then
+		local Hook = LookingForGroup:GetModule("Hook")
+		if Hook ~= nil then
+			if not Hook:IsHooked("QueueStatusDropDown_AddLFGListButtons") then
+				Hook:RawHook("QueueStatusDropDown_AddLFGListButtons",true)
+				Hook:RawHook("QueueStatusEntry_SetUpLFGListApplication",true)
+				Hook:RawHook("QueueStatusEntry_SetUpLFGListActiveEntry",true)
+				Hook:RawHook("LFGListUtil_OpenBestWindow",true)
 			end
 		end
 	end
 end
 
-function QUI.skinauraiconframes(frame)
-	if frame == nil then
-		return
+function LookingForGroup.enable_pve_frame(nochangehookstatus)
+	LFGListFrame_OnLoad(LFGListFrame)
+	LFGListFrame:Show()
+	GroupFinderFrame.groupButton3:Show()
+	local LFGListPVPStub = LFGListPVPStub
+	if LFGListPVPStub then
+		LFGListPVPStub:Show()
 	end
-	local auraframes = frame.auraFrames
-	for i=1,#auraframes do
-		local icon = auraframes[i].Icon
-		if icon then
-			local settexcoord = icon.SetTexCoord
-			if settexcoord then
-				settexcoord(icon,0.1,0.9,0.1,0.9)
-			end
+	local PVPQueueFrame = PVPQueueFrame
+	if PVPQueueFrame then
+		PVPQueueFrame.CategoryButton3:Show()
+	end
+	if not nochangehookstatus then
+		local Hook = LookingForGroup:GetModule("Hook")
+		if Hook ~= nil then
+			Hook:Unhook("QueueStatusDropDown_AddLFGListButtons")
+			Hook:Unhook("QueueStatusEntry_SetUpLFGListApplication")
+			Hook:Unhook("QueueStatusEntry_SetUpLFGListActiveEntry")
+			Hook:Unhook("LFGListUtil_OpenBestWindow")
 		end
 	end
+end
+
+function LookingForGroup.lfglist_apis(LFGList)
+	if LFGList == C_LFGList or LFGList == nil then
+		LFGList = {}	
+	end
+	for k,v in pairs(C_LFGList) do
+		if LFGList[k] == nil then
+			LFGList[k] = v
+		end
+	end
+	if LFGList.Util_IsEntryEmpowered == nil then
+		LFGList.Util_IsEntryEmpowered = LFGListUtil_IsEntryEmpowered
+	end
+	if LFGList.Util_IsAppEmpowered == nil then
+		LFGList.Util_IsAppEmpowered = LFGListUtil_IsAppEmpowered
+	end
+	if LFGList.C_PartyInfo_InviteUnit == nil then
+		LFGList.C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
+	end
+	return LFGList
+end
+
+function LookingForGroup.IsLookingForGroupEnabled()
+	local lfggroupenabled = C_LFGList.IsLookingForGroupEnabled
+	if lfggroupenabled then
+		return lfggroupenabled()
+	end
+	if IsRestrictedAccount() then
+		return false
+	end
+	if UnitLevel("player") < GetMaxLevelForLatestExpansion() then
+		return false
+	end
+	return true
 end
