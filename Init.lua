@@ -301,9 +301,14 @@ function QUI.skin_scrollframe(scollframe)
 	if scollframe == nil then
 		return
 	end
-	local tb = _G[scollframe]
-	if tb == nil then
-		return
+	local tb=scollframe
+	local scollframetype = type(scollframe)
+	local scollframeisstring = scollframetype == "string"
+	if scollframeisstring then
+		tb = _G[scollframe]
+		if tb == nil then
+			return
+		end
 	end
 	QUI.KillFrameNineSlice(tb)
 --[[
@@ -314,7 +319,9 @@ function QUI.skin_scrollframe(scollframe)
 	if tb.ScrollBar then
 		tb.ScrollBar:SetAlpha(0)
 	end
-	QUI.setalphazeroframe(_G[scollframe.."Inset"])
+	if scollframeisstring then
+		QUI.setalphazeroframe(_G[scollframe.."Inset"])
+	end
 	QUI.setalphazeroframe(tb.inset)
 end
 
@@ -365,6 +372,22 @@ function QUI.killframecorneredge(frame)
 		for k,v in pairs(frame) do
 			if type(k) == "string" and (k:find("Corner") or k:find("Edge")) and type(v)=="table" then
 				v:SetAlpha(0)
+			end
+		end
+	end
+end
+
+function QUI.skinauraiconframes(frame)
+	if frame == nil then
+		return
+	end
+	local auraframes = frame.auraFrames
+	for i=1,#auraframes do
+		local icon = auraframes[i].Icon
+		if icon then
+			local settexcoord = icon.SetTexCoord
+			if settexcoord then
+				settexcoord(icon,0.1,0.9,0.1,0.9)
 			end
 		end
 	end

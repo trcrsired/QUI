@@ -1,7 +1,12 @@
+if MacroFrame == nil then
+	return
+end
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 QUI.KillFrameNineSlice(MacroFrame)
 
+if MacroHorizontalBarLeft then
 MacroHorizontalBarLeft:SetAlpha(0)
+end
 
 local regions = {MacroFrame:GetRegions()}
 for i=1,#regions do
@@ -36,7 +41,9 @@ skinmacrobutton("MacroFrameSelectedMacroButton")
 
 end
 
+if MacroFrameSelectedMacroBackground then
 MacroFrameSelectedMacroBackground:SetAlpha(0)
+end
 
 if MacroButtonScrollFrameTop then
 MacroButtonScrollFrameTop:SetAlpha(0)

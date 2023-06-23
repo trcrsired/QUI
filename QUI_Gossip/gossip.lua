@@ -1,5 +1,6 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
-QUI.KillFrameNineSlice(GossipFrame)
+local skinscrollframe = QUI.skin_scrollframe
+skinscrollframe(GossipFrame)
 
 if GossipGreetingScrollFrameTop then
 GossipGreetingScrollFrameTop:SetAlpha(0)
@@ -30,15 +31,7 @@ skinbutton(QuestFrameDeclineButton)
 skinbutton(QuestFrameAcceptButton)
 skinbutton(QuestFrameGreetingGoodbyeButton)
 
-local function skinscrollframe(frame)
-	local name = frame:GetName()
-	_G[name.."Top"]:SetAlpha(0)
-	_G[name.."Middle"]:SetAlpha(0)
-	_G[name.."Bottom"]:SetAlpha(0)
-	_G[name.."ScrollBar"]:SetAlpha(0)
-end
-
 skinscrollframe(QuestRewardScrollFrame)
 skinscrollframe(QuestDetailScrollFrame)
 skinscrollframe(QuestGreetingScrollFrame)
---skinscrollframe(QuestNPCModelTextScrollFrame)
+skinscrollframe(QuestNPCModelTextScrollFrame)

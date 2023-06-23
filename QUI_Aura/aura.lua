@@ -1,17 +1,9 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 
 if BuffFrame.auraFrames then
-local BuffFrame = BuffFrame
-
-local bf_auraframes = BuffFrame.auraFrames
-for i=1,#bf_auraframes do
-	bf_auraframes[i].Icon:SetTexCoord(0.1,0.9,0.1,0.9)
-end
-
-local dbf_auraframes = DebuffFrame.auraFrames
-for i=1,#dbf_auraframes do
-	dbf_auraframes[i].Icon:SetTexCoord(0.1,0.9,0.1,0.9)
-end
+local skinauraiconframes = QUI.skinauraiconframes
+skinauraiconframes(BuffFrame)
+skinauraiconframes(DebuffFrame)
 
 else
 local last_buff,last_debuff = 0,0

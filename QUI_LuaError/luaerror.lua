@@ -1,3 +1,5 @@
+--[[
+
 ScriptErrorsFrameTopLeft:SetAlpha(0)
 ScriptErrorsFrameTopRight:SetAlpha(0)
 ScriptErrorsFrameTop:SetAlpha(0)
@@ -21,3 +23,8 @@ ScriptErrorsFrameScrollBar:SetAlpha(0)
 
 skinbutton(ScriptErrorsFrame.Reload)
 skinbutton(ScriptErrorsFrame.Close)
+
+]]
+
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+QUI.skin_scrollframe(ScriptErrorsFrame)
