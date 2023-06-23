@@ -121,7 +121,6 @@ function Ace3.RegisterAsContainer(acegui,container)
 		end
 	elseif tpe == "TabGroup" then
 		local CreateTab = ctn.CreateTab
-		
 		ctn.CreateTab = function(self, id)
 			local tab = CreateTab(self, id)
 			local name = tab:GetName()
