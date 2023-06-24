@@ -70,14 +70,14 @@ end
 function QUI_Options.GenerateB(key,name,b)
 	local gm = {}
 	for k,v in pairs(QUI[key]) do
-		gm[tostring(k)] = 
+		gm[tostring(k)] =
 		{
 			name = GetSpellInfo(k),
 			type = "group",
 			args = b
 		}
 	end
-	QUI_Options.options.args[key] = 
+	QUI_Options.options.args[key] =
 	{
 		type = "group",
 		name = name,
