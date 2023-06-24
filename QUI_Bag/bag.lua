@@ -160,7 +160,6 @@ end
 
 if ReagentBankFrame then
 QUI:SecureHookScript(ReagentBankFrame,"OnShow",function()
-	remove_shadow(ReagentBankFrame)
 	for i=1,98 do
 		QUI.TextureIcons(ReagentBankFrame["Item"..i])
 	end
