@@ -126,7 +126,7 @@ local function cofunc(unit,left,...)
 			lastguid = nil
 			break
 		end
-		if tag == 3 or guid~=lastguid then
+		if (tag < 2 or tag == 3) or guid~=lastguid then
 			playermodel:SetUnit(unit)
 			playermodel:SetAnimation(0)
 		end
