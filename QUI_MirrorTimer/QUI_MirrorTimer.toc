@@ -1,7 +1,0 @@
-## Interface: 100100
-## Author: cqwrteur
-## Title: QUI Mirror Timer
-
-## Dependencies: QUI
-
-mirrortimer.lua

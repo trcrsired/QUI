@@ -1,3 +1,7 @@
+local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
+
+local skin_checkbox = QUI.skin_checkbox
+
 HonorFrame.ConquestBar.Border:Hide()
 HonorFrame.ConquestBar.Background:SetTexture([[Interface\DialogFrame\UI-DialogBox-Background-Dark]])
 ConquestFrame.ConquestBar.Border:Hide()
@@ -22,14 +26,6 @@ button:GetNormalTexture():SetTexCoord(0.25,0.75,0.28,0.75)
 button:GetDisabledTexture():SetTexCoord(0.25,0.75,0.28,0.75)
 button:GetPushedTexture():SetTexCoord(0.25,0.75,0.28,0.75)
 button:GetHighlightTexture():SetTexCoord(0.25,0.75,0.28,0.75)
-
-local function skin_checkbox(box)
-	box:GetNormalTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
-	box:GetPushedTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
-	box:GetHighlightTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
-	box:GetCheckedTexture():SetTexCoord(0.2, 0.9, 0.1 ,0.9)
-	box:SetScale(0.7)
-end
 
 HonorFrame.TankIcon:SetPoint("BOTTOMLEFT",HonorFrame.Inset,"TOPLEFT",9,7)
 skin_checkbox(HonorFrame.TankIcon.checkButton)

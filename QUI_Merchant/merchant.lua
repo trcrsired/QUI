@@ -8,9 +8,13 @@ QUI.setalphazeroframe(MerchantExtraCurrencyInset)
 QUI.setalphazeroframe(MerchantMoneyInset)
 
 QUI.setalphazeroframe(BuybackBG)
+
+if MerchantFrameBottomRightBorder then
 MerchantFrameBottomLeftBorder:SetAlpha(0)
 MerchantFrameBottomRightBorder:SetAlpha(0)
-
+else
+QUI.KillFrameNineSlice(MerchantFrame)
+end
 
 
 for i=1,BUYBACK_ITEMS_PER_PAGE do

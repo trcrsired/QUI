@@ -392,3 +392,27 @@ function QUI.skinauraiconframes(frame)
 		end
 	end
 end
+
+function QUI.skin_checkbox(box)
+	if box == nil then
+		return
+	end
+	if box.GetNormalTexture then
+		box:GetNormalTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
+		if box.GetPushedTexture then
+			box:GetPushedTexture():SetTexCoord(0.3, 0.7, 0.3, 0.7)
+		end
+		if box.GetHighlightTexture then
+			local texture = box:GetHighlightTexture()
+			if texture then
+				texture:SetTexCoord(0.3, 0.7, 0.3, 0.7)
+			end
+		end
+		if box.GetCheckedTexture then
+			box:GetCheckedTexture():SetTexCoord(0.2, 0.9, 0.1 ,0.9)
+		end
+		if box.SetScale then
+			box:SetScale(0.7)
+		end
+	end
+end
