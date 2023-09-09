@@ -406,10 +406,19 @@ local function maincofunc()
 								overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -frameWidth * 0.2, frameHeight * 0.2);
 								overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", frameWidth * 0.2, -frameHeight * 0.2);
 							end
-							if overlay.animOut:IsPlaying() then
-								overlay.animOut:Stop();
+							local ProcStartAnim = overlay.ProcStartAnim
+							if ProcStartAnim then
+								if ProcStartAnim:IsPlaying() then
+									ProcStartAnim:Stop();
+								end
+								ProcStartAnim:Play();
+							elseif overlay.animOut then
+								if overlay.animOut:IsPlaying() then
+									overlay.animOut:Stop();
+								end
+								overlay.animIn:Play();
 							end
-							overlay.animIn:Play();
+							overlay:Show()
 						elseif overlay then
 							spell_activation_pool:Release(overlay)
 							button.cooldown = nil
