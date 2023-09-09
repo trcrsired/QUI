@@ -391,7 +391,7 @@ local function maincofunc()
 					isthisspell = true
 				end
 				if isthisspell then
-					local button = buttons[j]
+					local button = buttons[i]
 					if button then
 						local overlay = button.overlay
 						if arg1 == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
