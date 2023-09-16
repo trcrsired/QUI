@@ -73,20 +73,46 @@ local function getbindingkeyandfiltering(str)
 	return text
 end
 
+local nop = nop
+local HasVehicleActionBar = HasVehicleActionBar or nop
+local HasOverrideActionBar = HasOverrideActionBar or nop
+local HasTempShapeshiftActionBar = HasTempShapeshiftActionBar or nop
+local HasBonusActionBar = HasBonusActionBar or nop
+local GetVehicleBarIndex = GetVehicleBarIndex or nop
+local GetBonusBarIndex = GetBonusBarIndex or nop
+local GetOverrideBarIndex = GetOverrideBarIndex or nop
+local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex or nop
+local GetActionBarPage = GetActionBarPage
+local MainMenuBarArtFrameOrMenuBar = MainMenuBarArtFrame or MainMenuBar
+local IsActionInRange = IsActionInRange
+local UnitExists = UnitExists
+local C_Timer = C_Timer
+local NewTicker = C_Timer.NewTicker
+local RegisterStateDriver = RegisterStateDriver
+local CreateFramePool = CreateFramePool
+local wipe = wipe
+local GetTime = GetTime
+
 local function get_action_bar_page()
-	local page
-	local frm = MainMenuBarArtFrame
-	if MainMenuBarArtFrame then
-		frm = MainMenuBarArtFrame
-	else
-		frm = MainMenuBar
+	if HasVehicleActionBar() then
+		return GetVehicleBarIndex()
+	elseif HasOverrideActionBar() then
+		return GetOverrideBarIndex()
+	elseif HasTempShapeshiftActionBar() then
+		return GetTempShapeshiftBarIndex()
+	elseif HasBonusActionBar() then
+		return GetBonusBarIndex()
 	end
-	page = frm:GetAttribute("actionpage")
+	local page = MainMenuBarArtFrameOrMenuBar:GetAttribute("actionpage")
 	if page == nil then
 		page = GetActionBarPage()
 	end
 	return page
 end
+
+local GameTooltip_SetDefaultAnchor = GameTooltip_SetDefaultAnchor
+local GameTooltip = GameTooltip
+local UIParent = UIParent
 
 local function action_button_onenter(actionbutton)
 	GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
@@ -102,13 +128,26 @@ local function action_button_onleave()
 end
 
 local UnitOnTaxi = UnitOnTaxi
-local UnitControllingVehicle = UnitControllingVehicle
+local CanExitVehicle = CanExitVehicle or nop
+local UnitControllingVehicle = UnitControllingVehicle or nop
+local TAXI_CANCEL_DESCRIPTION = TAXI_CANCEL_DESCRIPTION
+local BINDING_NAME_VEHICLEEXIT = BINDING_NAME_VEHICLEEXIT
+local CreateFrame = CreateFrame
+local IsUsableAction = IsUsableAction
+local GetActionCount = GetActionCount
+local GetActionTexture = GetActionTexture
+local GetActionCharges = GetActionCharges
+local GetActionCooldown = GetActionCooldown
+local GetSpellCooldown = GetSpellCooldown
+local FlyoutHasSpell = FlyoutHasSpell
+local GetMacroSpell = GetMacroSpell
+local GetActionInfo = GetActionInfo
 
 local function leavevehicle_button_onenter(actionbutton)
 	local text
 	if UnitOnTaxi("player") then
 		text = TAXI_CANCEL_DESCRIPTION
-	elseif UnitControllingVehicle and UnitControllingVehicle("player") and CanExitVehicle() then
+	elseif UnitControllingVehicle("player") and CanExitVehicle() then
 		text = BINDING_NAME_VEHICLEEXIT
 	end
 	if text then
@@ -176,13 +215,6 @@ end
 
 local function maincofunc()
 --	RegisterStateDriver(OverrideActionBar, "visibility", "[overridebar][vehicleui][possessbar,@vehicle,exists] show; hide")
-	local GetActionTexture = GetActionTexture
-	local GetActionCharges = GetActionCharges
-	local GetActionCooldown = GetActionCooldown
-	local GetSpellCooldown = GetSpellCooldown
-	local FlyoutHasSpell = FlyoutHasSpell
-	local GetMacroSpell = GetMacroSpell
-	local GetActionInfo = GetActionInfo
 	local gcd = 1.5
 	local function update(index,button,gtime,current_page)
 		if index < 13 then
@@ -329,10 +361,7 @@ local function maincofunc()
 	local function resume4()
 		coroutine.resume(current,4)
 	end
-	local NewTicker = C_Timer.NewTicker
 	local ticker
-	local IsActionInRange = IsActionInRange
-	local UnitExists = UnitExists
 	local function updaterange(i,button,current_page)
 		if i < 13 then
 			i = (current_page-1)*12+i
