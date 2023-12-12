@@ -360,7 +360,11 @@ function QUI.skin_buttons_in_frame(frame)
 			QUI.setalphazeroframe(_G[slot:GetName().."Frame"])
 			slot:SetNormalTexture("")
 			slot:GetHighlightTexture():SetTexCoord(0.1,0.9,0.1,0.9)
-			slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
+			if slot:GetPushedTexture() then
+				if slot:GetPushedTexture().SetTexCoord then
+					slot:GetPushedTexture():SetTexCoord(0.1,0.9,0.1,0.9)
+				end
+			end
 			QUI.TextureIcons(slot)
 		end
 	end
