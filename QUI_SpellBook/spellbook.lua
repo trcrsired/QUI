@@ -7,7 +7,11 @@ SpellBookPage2:Hide()
 end
 
 local _G = _G
-for i=1,SPELLS_PER_PAGE do
+local spellsperpage = SPELLS_PER_PAGE
+if spellsperpage == nil then
+return
+end
+for i=1,spellsperpage do
 	local button=_G["SpellButton"..i]
 	local IconTextureBg = button.IconTextureBg
 	if IconTextureBg then

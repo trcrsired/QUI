@@ -15,7 +15,10 @@ local texture = BorderFrame:CreateTexture(nil,"BACKGROUND")
 texture:SetTexture(131071)
 texture:SetAllPoints(BorderFrame)
 WorldMapFrame.NavBar.overlay:Hide()
-QuestMapFrame.QuestsFrame.DetailFrame:SetAlpha(0)
+local detailFrame = QuestMapFrame.QuestsFrame.DetailFrame
+if detailFrame then
+	detailFrame:SetAlpha(0)
+end
 local regions = {WorldMapFrame.NavBar:GetRegions()}
 
 for i=1,#regions do
@@ -27,7 +30,9 @@ end
 
 QuestMapFrame.VerticalSeparator:Hide()
 
+if QuestMapFrame.Background then
 QuestMapFrame.Background:SetAlpha(0)
+end
 
 QuestScrollFrame.Contents.Separator:Hide()
 
@@ -46,6 +51,9 @@ QuestScrollFrame.Contents.Separator:SetAlpha(0)
 QuestScrollFrame.Contents.StoryHeader.Background:SetAlpha(0)
 
 local function skinbutton(button)
+	if button == nil then
+		return
+	end
 	if button.Left then
 	button.Left:SetAlpha(0)
 	button.Middle:SetAlpha(0)

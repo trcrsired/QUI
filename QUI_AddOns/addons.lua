@@ -11,7 +11,9 @@ for k,v in pairs(AddonList) do
 end
 
 QUI.skin_button(AddonListForceLoad)
+if AddonCharacterDropDown then
 QUI.skin_button(AddonCharacterDropDown.Button)
+end
 
 for i=1,MAX_ADDONS_DISPLAYED do
 	QUI.skin_button(_G["AddonListEntry"..i.."Enabled"])

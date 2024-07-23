@@ -41,7 +41,9 @@ QUI.setalphazeroframe(ReputationDetailDivider)
 QUI.setalphazeroframe(ReputationDetailCorner)
 
 
+if ReputationDetailFrame then
 QUI.KillFrameBackgroundBySearch(ReputationDetailFrame.Border)
+end
 
 QUI.setalphazeroframe(TokenFramePopupCorner)
 

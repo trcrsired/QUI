@@ -265,6 +265,9 @@ function QUI.skin_dropdown(dropdownstr)
 		return
 	end
 	local tb = _G[dropdownstr]
+	if tb == nil then
+		return
+	end
 	local left = _G[dropdownstr.."Left"]
 	if left == nil then
 		left = tb.left
