@@ -15,17 +15,35 @@ ConquestFrame.JoinButton.Left:SetAlpha(0)
 ConquestFrame.JoinButton.Middle:SetVertexColor(0,0,0,1)
 ConquestFrame.JoinButton.Right:SetAlpha(0)
 ConquestFrame.JoinButton:SetHighlightTexture("")
+if HonorFrameTypeDropDownLeft then
+    HonorFrameTypeDropDownLeft:SetAlpha(0)
+    HonorFrameTypeDropDownMiddle:SetTexture("Interface\\Common\\Common-Input-Border")
+    HonorFrameTypeDropDownMiddle:SetHeight(20)
+    HonorFrameTypeDropDownMiddle:SetTexCoord(0.0625,0.9375,0.1,0.525)
+    HonorFrameTypeDropDownRight:SetAlpha(0)
+    
+    local button = HonorFrameTypeDropDown.Button
+    button:GetNormalTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    button:GetDisabledTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    button:GetPushedTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    button:GetHighlightTexture():SetTexCoord(0.25,0.75,0.28,0.75)    
+else
+--[[
 
-HonorFrameTypeDropDownLeft:SetAlpha(0)
-HonorFrameTypeDropDownMiddle:SetTexture("Interface\\Common\\Common-Input-Border")
-HonorFrameTypeDropDownMiddle:SetHeight(20)
-HonorFrameTypeDropDownMiddle:SetTexCoord(0.0625,0.9375,0.1,0.525)
-HonorFrameTypeDropDownRight:SetAlpha(0)
-local button = HonorFrameTypeDropDown.Button
-button:GetNormalTexture():SetTexCoord(0.25,0.75,0.28,0.75)
-button:GetDisabledTexture():SetTexCoord(0.25,0.75,0.28,0.75)
-button:GetPushedTexture():SetTexCoord(0.25,0.75,0.28,0.75)
-button:GetHighlightTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    local HonorFrameTypeDropdown = HonorFrame.TypeDropdown
+    HonorFrameTypeDropdown.Left:SetAlpha(0)
+    HonorFrameTypeDropdown.Middle:SetTexture("Interface\\Common\\Common-Input-Border")
+    HonorFrameTypeDropdown.Middle:SetHeight(20)
+    HonorFrameTypeDropdown.Middle:SetTexCoord(0.0625,0.9375,0.1,0.525)
+    HonorFrameTypeDropdown.Right:SetAlpha(0)
+
+    local button = HonorFrameTypeDropDown.Button
+    button:GetNormalTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    button:GetDisabledTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    button:GetPushedTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+    button:GetHighlightTexture():SetTexCoord(0.25,0.75,0.28,0.75)
+]]
+end
 
 HonorFrame.TankIcon:SetPoint("BOTTOMLEFT",HonorFrame.Inset,"TOPLEFT",9,7)
 skin_checkbox(HonorFrame.TankIcon.checkButton)
