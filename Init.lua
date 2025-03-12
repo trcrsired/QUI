@@ -436,15 +436,19 @@ function QUI.skin_checkbox(box)
 end
 
 local UnitAura = UnitAura
+if UnitAura then
+CRaidFrame.UnitAura = UnitAura
+else
 
-function QUI.UnitAura(...)
-	if UnitAura then
-		return UnitAura(...)
-	end
-	local auraData = C_UnitAuras.GetAuraDataByIndex(...)
+local C_UnitAuras_GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local AuraUtil_UnpackAuraData = AuraUtil.UnpackAuraData
+
+function CRaidFrame.UnitAura(...)
+	local auraData = C_UnitAuras_GetAuraDataByIndex(...)
 	if not auraData then
 		return
 	end
+	return AuraUtil_UnpackAuraData(auraData)
+end
 
-	return AuraUtil.UnpackAuraData(auraData)
 end
