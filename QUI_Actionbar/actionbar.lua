@@ -139,11 +139,9 @@ local GetActionTexture = GetActionTexture
 local GetActionCharges = GetActionCharges
 local GetActionCooldown = GetActionCooldown
 local GetSpellCooldown = GetSpellCooldown
-
+local C_Spell_GetSpellCooldown
 if C_Spell then
-if GetSpellCooldown == nil then
-		GetSpellCooldown= C_Spell.GetSpellCooldown
-end
+	GetSpellCooldown= C_Spell.GetSpellCooldown
 end
 
 local FlyoutHasSpell = FlyoutHasSpell
@@ -392,8 +390,12 @@ local function maincofunc()
 	while true do
 		repeat
 		local gtime = GetTime()
-		local gcd_tb = GetSpellCooldown(61304)
 		local gcds,gcdt = gcd_tb.startTime, gcd_tb.duration
+		if C_Spell_GetSpellCooldown then
+			local gcd_tb = GetSpellCooldown(61304)
+		else
+			gcds,gcdt = GetSpellCooldown(61304)
+		end
 		if 0~= gcdt then
 			gcd = gcdt + 0.01
 		end
