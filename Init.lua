@@ -437,13 +437,13 @@ end
 
 local UnitAura = UnitAura
 if UnitAura then
-CRaidFrame.UnitAura = UnitAura
+QUI.UnitAura = UnitAura
 else
 
 local C_UnitAuras_GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local AuraUtil_UnpackAuraData = AuraUtil.UnpackAuraData
 
-function CRaidFrame.UnitAura(...)
+function QUI.UnitAura(...)
 	local auraData = C_UnitAuras_GetAuraDataByIndex(...)
 	if not auraData then
 		return
