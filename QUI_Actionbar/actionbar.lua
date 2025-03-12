@@ -141,7 +141,7 @@ local GetActionCooldown = GetActionCooldown
 local GetSpellCooldown = GetSpellCooldown
 local C_Spell_GetSpellCooldown
 if C_Spell then
-	GetSpellCooldown= C_Spell.GetSpellCooldown
+	C_Spell_GetSpellCooldown = C_Spell.GetSpellCooldown
 end
 
 local FlyoutHasSpell = FlyoutHasSpell
@@ -392,7 +392,7 @@ local function maincofunc()
 		local gtime = GetTime()
 		local gcds,gcdt = gcd_tb.startTime, gcd_tb.duration
 		if C_Spell_GetSpellCooldown then
-			local gcd_tb = GetSpellCooldown(61304)
+			local gcd_tb = C_Spell_GetSpellCooldown(61304)
 		else
 			gcds,gcdt = GetSpellCooldown(61304)
 		end
