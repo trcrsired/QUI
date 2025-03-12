@@ -392,7 +392,8 @@ local function maincofunc()
 	while true do
 		repeat
 		local gtime = GetTime()
-		local gcds,gcdt = GetSpellCooldown(61304)
+		local gcd_tb = GetSpellCooldown(61304)
+		local gcds,gcdt = gcd_tb.startTime, gcd_tb.duration
 		if 0~= gcdt then
 			gcd = gcdt + 0.01
 		end
