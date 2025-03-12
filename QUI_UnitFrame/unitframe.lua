@@ -165,10 +165,11 @@ local function cofunc(unit,left,...)
 		end
 		if tag ~= 1 and tag ~= 4 then
 			local powerType = UnitPowerType(unit)
-			local powercolor = PowerBarColor[powerType]
-			if powercolor then
-				resourcebar:SetStatusBarColor(powercolor.r,powercolor.g,powercolor.b,powercolor.a)
+			if powerType == nil then
+				break
 			end
+			local powercolor = PowerBarColor[powerType]
+			resourcebar:SetStatusBarColor(powercolor.r,powercolor.g,powercolor.b,powercolor.a)
 			local pmx = UnitPowerMax(unit)
 			local pw = UnitPower(unit)
 			resourcebar:SetMinMaxValues(0,pmx)
