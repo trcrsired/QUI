@@ -44,7 +44,6 @@ move-folders:
   QUI/QUI_Minimap: QUI_Minimap
   QUI/QUI_MirrorTimer: QUI_MirrorTimer
   QUI/QUI_Nameplate: QUI_Nameplate
-  QUI/QUI_O: QUI_O
   QUI/QUI_Objective: QUI_Objective
   QUI/QUI_OrderHall: QUI_OrderHall
   QUI/QUI_PVP: QUI_PVP
