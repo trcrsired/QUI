@@ -6,14 +6,25 @@ QUI[1] = {}
 
 local C_AddOns = C_AddOns
 if C_AddOns == nil then
-	C_AddOns = _G
+QUI.C_AddOns =
+{
+LoadAddOn = LoadAddOn,
+GetNumAddOns = GetNumAddOns,
+GetAddOnMetadata = GetAddOnMetadata,
+IsAddOnLoaded = IsAddOnLoaded,
+GetAddOnInfo = GetAddOnInfo
+}
+else
+	QUI.C_AddOns = C_AddOns
 end
 
-local LoadAddOn = C_AddOns.LoadAddOn
-local GetNumAddOns = C_AddOns.GetNumAddOns
-local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
-local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local QUI_C_AddOns = QUI.C_AddOns
+local GetAddOnMetadata = QUI_C_AddOns.GetAddOnMetadata
+local GetAddOnInfo = QUI_C_AddOns.GetAddOnInfo
+local GetNumAddOns = QUI_C_AddOns.GetNumAddOns
+local IsAddOnLoaded = QUI_C_AddOns.IsAddOnLoaded
+local LoadAddOn = QUI_C_AddOns.LoadAddOn
+
 
 function QUI:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("QUIDB",{profile = {}},true)

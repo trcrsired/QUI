@@ -1,4 +1,12 @@
 tinsert(UISpecialFrames, "CalendarFrame")
+local AceAddon = LibStub("AceAddon-3.0")
+local QUI = AceAddon:GetAddon("QUI")
+local QUI_C_AddOns = QUI.C_AddOns
+local GetAddOnMetadata = QUI_C_AddOns.GetAddOnMetadata
+local GetAddOnInfo = QUI_C_AddOns.GetAddOnInfo
+local GetNumAddOns = QUI_C_AddOns.GetNumAddOns
+local IsAddOnLoaded = QUI_C_AddOns.IsAddOnLoaded
+local LoadAddOn = QUI_C_AddOns.LoadAddOn
 
 local first_sound_output_driver = Sound_GameSystem_GetOutputDriverNameByIndex(1)
 local is_linux_wine = first_sound_output_driver == "Pulseaudio (Pulseaudio)" or first_sound_output_driver == "PulseAudio (PulseAudio)"
