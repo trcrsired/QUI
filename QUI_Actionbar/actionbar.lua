@@ -192,6 +192,7 @@ local function create(frame,ipstart,location,width,macro,vehicle)
 		actionbutton:SetAttribute("type", "action")
 		actionbutton:SetAttribute("action", ipstart)
 	end
+	actionbutton:SetAttribute("flyoutDirection", "UP")
 	actionbutton[2] = texture
 	local cd = CreateFrame("Cooldown", nil, actionbutton, "CooldownFrameTemplate")
 	cd:SetHideCountdownNumbers(true)
