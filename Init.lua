@@ -12,7 +12,8 @@ LoadAddOn = LoadAddOn,
 GetNumAddOns = GetNumAddOns,
 GetAddOnMetadata = GetAddOnMetadata,
 IsAddOnLoaded = IsAddOnLoaded,
-GetAddOnInfo = GetAddOnInfo
+GetAddOnInfo = GetAddOnInfo,
+GetAddOnDependencies = GetAddOnDependencies
 }
 else
 	QUI.C_AddOns = C_AddOns

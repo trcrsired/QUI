@@ -7,6 +7,7 @@ local GetAddOnInfo = QUI_C_AddOns.GetAddOnInfo
 local GetNumAddOns = QUI_C_AddOns.GetNumAddOns
 local IsAddOnLoaded = QUI_C_AddOns.IsAddOnLoaded
 local LoadAddOn = QUI_C_AddOns.LoadAddOn
+local GetAddOnDependencies = QUI_C_AddOns.GetAddOnDependencies
 
 local first_sound_output_driver = Sound_GameSystem_GetOutputDriverNameByIndex(1)
 local is_linux_wine = first_sound_output_driver == "Pulseaudio (Pulseaudio)" or first_sound_output_driver == "PulseAudio (PulseAudio)"
