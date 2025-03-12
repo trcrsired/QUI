@@ -139,6 +139,13 @@ local GetActionTexture = GetActionTexture
 local GetActionCharges = GetActionCharges
 local GetActionCooldown = GetActionCooldown
 local GetSpellCooldown = GetSpellCooldown
+
+if C_Spell then
+if GetSpellCooldown == nil then
+		GetSpellCooldown= C_Spell.GetSpellCooldown
+end
+end
+
 local FlyoutHasSpell = FlyoutHasSpell
 local GetMacroSpell = GetMacroSpell
 local GetActionInfo = GetActionInfo
