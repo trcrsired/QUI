@@ -69,7 +69,9 @@ local function cogameinfo()
 		local level = UnitLevel("player")
 		if level~=max_lvl then
 			local c,m =UnitXP("player"),UnitXPMax("player")
-			return ("%d/%d/%d(%.1f%%) "):format(level,c,m,100*c/m)
+			if m ~= 0 then
+				return ("%d/%d/%d(%.1f%%) "):format(level,c,m,100*c/m)
+			end
 		end
 		return ""
 	end
