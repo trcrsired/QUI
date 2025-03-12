@@ -37,7 +37,7 @@ end
 
 function QUI:SetUnitAura(obj, ...)
 	if obj:IsForbidden() then return end
-	local name, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID = UnitAura(...)
+	local name, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID = self.UnitAura(...)
 	local caster_name
 	if caster then
 		caster_name = UnitName(caster)

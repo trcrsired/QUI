@@ -434,3 +434,17 @@ function QUI.skin_checkbox(box)
 		end
 	end
 end
+
+local UnitAura = UnitAura
+
+function QUI.UnitAura(...)
+	if UnitAura then
+		return UnitAura(...)
+	end
+	local auraData = C_UnitAuras.GetAuraDataByIndex(...)
+	if not auraData then
+		return
+	end
+
+	return AuraUtil.UnpackAuraData(auraData)
+end
