@@ -1,6 +1,6 @@
 local QUI = LibStub("AceAddon-3.0"):GetAddon("QUI")
 local ActionBar = QUI:NewModule("ActionBar","AceEvent-3.0")
-
+local skin_transparent_button = QUI.skin_transparent_button
 do
 	local KillFrame = QUI.KillFrame
 	KillFrame(MultiBarBottomLeft)
@@ -162,9 +162,9 @@ local function leavevehicle_button_onenter(actionbutton)
 end
 
 local function create(frame,ipstart,location,width,macro,vehicle)
-	local templatename = "SecureActionButtonTemplate"
+	local templatename = "ActionButtonTemplate, SecureActionButtonTemplate"
 	if vehicle then
-		templatename = "InsecureActionButtonTemplate"
+		templatename = "ActionButtonTemplate, InsecureActionButtonTemplate"
 	end
 	local actionbutton = CreateFrame("Button",nil,frame,templatename)
 	location = location * width
@@ -192,7 +192,7 @@ local function create(frame,ipstart,location,width,macro,vehicle)
 		actionbutton:SetAttribute("type", "action")
 		actionbutton:SetAttribute("action", ipstart)
 	end
-	actionbutton:SetAttribute("flyoutDirection", "UP")
+	skin_transparent_button(actionbutton)
 	actionbutton[2] = texture
 	local cd = CreateFrame("Cooldown", nil, actionbutton, "CooldownFrameTemplate")
 	cd:SetHideCountdownNumbers(true)

@@ -396,6 +396,36 @@ function QUI.skin_buttons_in_frame(frame)
 	end
 end
 
+function QUI.skin_transparent_button(buttonframe)
+	if buttonframe == nil then
+		return
+	end
+	local slotBackground = buttonframe.SlotBackground
+	if slotBackground then
+		slotBackground:Hide()
+	end
+	local GetNormalTexture = buttonframe.GetNormalTexture
+	if GetNormalTexture then
+		local texture = GetNormalTexture(buttonframe)
+		if texture then
+			texture:SetAlpha(0)
+		end
+	end
+	local GetPushedTexture = buttonframe.GetPushedTexture
+	if GetPushedTexture then
+		local texture = GetPushedTexture(buttonframe)
+		if texture then
+			texture:SetAlpha(0)
+		end
+	end
+	local GetHighlightTexture = buttonframe.GetHighlightTexture
+	if GetHighlightTexture then
+		local texture = GetHighlightTexture(buttonframe)
+		if texture then
+			texture:SetAlpha(0)
+		end
+	end
+end
 
 function QUI.killframecorneredge(frame)
 	if frame then
